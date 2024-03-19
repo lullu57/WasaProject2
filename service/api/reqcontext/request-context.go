@@ -7,6 +7,7 @@ Each value here should be assumed valid only per request only, with some excepti
 package reqcontext
 
 import (
+	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 )
@@ -15,7 +16,10 @@ import (
 type RequestContext struct {
 	// ReqUUID is the request unique ID
 	ReqUUID uuid.UUID
-
+	// Database is the instance of database.AppDatabase where data are saved
+	Database database.AppDatabase
 	// Logger is a custom field logger for the request
 	Logger logrus.FieldLogger
+	// User is the user that is making the request
+	User database.User
 }

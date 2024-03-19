@@ -49,7 +49,7 @@ paths:
                 
         "400": { $ref: "#/components/responses/BadRequest" }
         "500": { $ref: "#/components/responses/ServerError" }
-  /user:
+  /users/:
     post:
       tags: [user]
       summary: Creates a new user

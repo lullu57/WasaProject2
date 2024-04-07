@@ -16,7 +16,7 @@ import (
 type RequestContext struct {
 	// ReqUUID is the request unique ID
 	ReqUUID uuid.UUID
-	// Database is the instance of database.AppDatabase where data are saved
+	// Database is the instance of database.AppDatabase where data is saved
 	Database database.AppDatabase
 	// Logger is a custom field logger for the request
 	Logger logrus.FieldLogger

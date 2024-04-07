@@ -49,7 +49,7 @@ paths:
                 
         "400": { $ref: "#/components/responses/BadRequest" }
         "500": { $ref: "#/components/responses/ServerError" }
-  /users/:
+  /users:
     post:
       tags: [user]
       summary: Creates a new user
@@ -140,7 +140,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /users/{username}/followers/:
+  /users/{username}/followers:
     parameters:
         - name: username
           in: path
@@ -532,6 +532,53 @@ components:
       maxLength: 20
       pattern: "^[a-zA-Z0-9_]+$"
       description: A unique comment identifier
+    user: 
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 10
+          maxLength: 20
+          pattern: "^[a-zA-Z0-9_]+$"
+          description: A unique user identifier
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          pattern: "^[a-zA-Z0-9_]+$"
+          description: The user's username
+        followers:
+          type: array
+          items:
+            type: string
+            description: Unique identifier of a follower.
+            minLength: 10
+            maxLength: 20
+            pattern: "^[a-zA-Z0-9_]+$"
+          description: An array of unique identifiers for the user's followers.
+        following:
+          type: array
+          items:
+            type: string
+            description: Unique identifier of a followed user.
+            minLength: 10
+            maxLength: 20
+            pattern: "^[a-zA-Z0-9_]+$"
+          description: An array of unique identifiers for the users being followed by the user.
+        photos:
+          type: array
+          items:
+            type: string
+            description: Unique identifier of a photo uploaded by the user.
+            minLength: 10
+            maxLength: 20
+            pattern: "^[a-zA-Z0-9_]+$"
+          description: An array of unique identifiers for the photos uploaded by the user.
+      required:
+        - userId
+        - username
+      description: Represents a user, including information about their followers, who they're following, and their photos.
+
 
     
   securitySchemes:

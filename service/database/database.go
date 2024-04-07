@@ -98,8 +98,11 @@ type AppDatabase interface {
 	Ping() error
 	SetUsername(currentUsername string, newUsername string) error
 	GetUserProfile(username string) (*User, error)
-	likePhoto(userID string, photoID string) error
-	unlikePhoto(userID string, photoID string) error
+	LikePhoto(userID string, photoID string) error
+	UnlikePhoto(userID string, photoID string) error
+	FollowUser(followerID string, followedID string) error
+	UnfollowUser(followerID string, followedID string) error
+	GetUserIDByUsername(username string) (string, error)
 }
 
 type appdbimpl struct {

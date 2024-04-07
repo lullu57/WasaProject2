@@ -96,6 +96,10 @@ type AppDatabase interface {
 	SetName(name string) error
 	AddUser(user *User) error
 	Ping() error
+	SetUsername(currentUsername string, newUsername string) error
+	GetUserProfile(username string) (*User, error)
+	likePhoto(userID string, photoID string) error
+	unlikePhoto(userID string, photoID string) error
 }
 
 type appdbimpl struct {

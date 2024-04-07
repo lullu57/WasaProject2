@@ -142,3 +142,31 @@ func (db *appdbimpl) GetUserProfile(username string) (*User, error) {
 
 	return &user, nil
 }
+
+func (db *appdbimpl) FollowUser(followerID, followedID string) error {
+	_, err := db.c.Exec(`INSERT INTO followers (user_id, follower_id) VALUES (?, ?)`, followedID, followerID)
+	if err != nil {
+		return fmt.Errorf("error following user: %w", err)
+	}
+	return nil
+}
+
+func (db *appdbimpl) UnfollowUser(followerID, followedID string) error {
+	_, err := db.c.Exec(`DELETE FROM followers WHERE user_id = ? AND follower_id = ?`, followedID, followerID)
+	if err != nil {
+		return fmt.Errorf("error unfollowing user: %w", err)
+	}
+	return nil
+}
+
+func (db *appdbimpl) GetUserIDByUsername(username string) (string, error) {
+	var userID string
+	err := db.c.QueryRow("SELECT user_id FROM users WHERE username = ?", username).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", fmt.Errorf("user not found")
+		}
+		return "", fmt.Errorf("query error: %w", err)
+	}
+	return userID, nil
+}

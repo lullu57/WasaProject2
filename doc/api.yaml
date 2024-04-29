@@ -165,7 +165,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /users/{username}/followers:
+  /users/followers/{username}:
     parameters:
         - name: username
           in: path
@@ -227,7 +227,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /users/{username}/bans:
+  /users/bans/{username}:
     parameters:
       - name: username
         in: path
@@ -311,7 +311,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
     
-  /photos/{photoId}/comments:
+  /photos/comments/{photoId}:
     parameters:
         - name: photoId
           in: path
@@ -420,7 +420,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /photos/{photoId}/likes:
+  /photos/likes/{photoId}:
     parameters:
       - name: photoId
         in: path

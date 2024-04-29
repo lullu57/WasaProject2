@@ -16,7 +16,7 @@
         <p>No profile data available.</p>
       </div>
       <div class="gallery">
-        <ImageComponent v-for="photo in userProfile.photos" :key="photo.photoId" :photoDetails="photo" />
+        <photo-card v-for="photo in userProfile.photos" :key="photo.id" :photo="photo" />
       </div>
     </div>
 </template>
@@ -24,7 +24,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import api from "@/services/axios"; 
-import ImageComponent from '@/components/ImageComponent.vue';
 
 const props = defineProps({
   username: String

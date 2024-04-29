@@ -92,7 +92,7 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /users/{username}:
+  /users/username/{username}:
     parameters:
         - name: username
           in: path
@@ -124,6 +124,30 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
   
+    get:
+      tags: [user]
+      summary: Get User Profile
+      description: Get the profile of a user.
+      operationId: getUserProfile
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+
+  /users/id/{userID}:
+    parameters:
+        - name: userID
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/user'
     get:
       tags: [user]
       summary: Get User Profile

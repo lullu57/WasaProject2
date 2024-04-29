@@ -79,6 +79,22 @@ func HandleGetUserProfile(w http.ResponseWriter, r *http.Request, ps httprouter.
 	json.NewEncoder(w).Encode(user)
 }
 
+func HandleGetUserProfileID(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	userID := ps.ByName("userID") // Assuming userID is the URL parameter
+
+	ctx.Logger.Info("Retrieving user profile for userID: ", userID)
+	user, err := ctx.Database.GetUserProfileByID(userID)
+	if err != nil {
+		ctx.Logger.Error("User not found: ", err)
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
+}
+
 func doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	var req struct {
 		Name string `json:"name"`

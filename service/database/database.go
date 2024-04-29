@@ -117,6 +117,7 @@ type AppDatabase interface {
 	DeletePhoto(photoID string) error
 	GetCommentsByPhotoId(photoId string) ([]Comment, error)
 	GetFollowersByUsername(username string) ([]string, error)
+	GetUserProfileByID(userID string) (*User, error)
 }
 
 type appdbimpl struct {

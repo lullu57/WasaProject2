@@ -171,6 +171,61 @@ func (db *appdbimpl) GetUserProfile(username string) (*User, error) {
 	return &user, nil
 }
 
+func (db *appdbimpl) GetUserProfileByID(userID string) (*User, error) {
+	// Fetch basic user info
+	var user User
+	err := db.c.QueryRow("SELECT user_id, username FROM users WHERE user_id = ?", userID).Scan(&user.ID, &user.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user not found")
+		}
+		return nil, fmt.Errorf("query error: %w", err)
+	}
+	// Fetch followers
+	rows, err := db.c.Query("SELECT follower_id FROM followers WHERE user_id = ?", user.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch followers: %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var followerID string
+		if err := rows.Scan(&followerID); err != nil {
+			return nil, fmt.Errorf("failed to read follower row: %w", err)
+		}
+		user.Followers = append(user.Followers, followerID)
+	}
+
+	// Fetch following
+	rows, err = db.c.Query("SELECT user_id FROM followers WHERE follower_id = ?", user.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch following: %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var followingID string
+		if err := rows.Scan(&followingID); err != nil {
+			return nil, fmt.Errorf("failed to read following row: %w", err)
+		}
+		user.Following = append(user.Following, followingID)
+	}
+
+	// Fetch photos
+	rows, err = db.c.Query("SELECT photo_id FROM new_photos WHERE user_id = ?", user.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch photos: %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var photoID string
+		if err := rows.Scan(&photoID); err != nil {
+			return nil, fmt.Errorf("failed to read photo row: %w", err)
+		}
+		user.Photos = append(user.Photos, photoID)
+	}
+
+	return &user, nil
+}
+
 func (db *appdbimpl) FollowUser(followerID, followedID string) error {
 	_, err := db.c.Exec(`INSERT INTO followers (user_id, follower_id) VALUES (?, ?)`, followedID, followerID)
 	if err != nil {

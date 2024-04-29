@@ -75,12 +75,12 @@ type Like struct {
 }
 
 type Photo struct {
-	ID        string    `json:"photoId" db:"photo_id"`    // Unique identifier
-	UserID    string    `json:"userId" db:"user_id"`      // ID of the user who uploaded the photo
-	URL       string    `json:"url" db:"url"`             // URL of the photo
-	Timestamp time.Time `json:"timestamp" db:"timestamp"` // Timestamp of when the photo was uploaded
-	Likes     []Like    `json:"likes"`                    // Note: This requires a relational mapping and isn't directly mapped to a single column
-	Comments  []Comment `json:"comments"`                 // Note: This requires a relational mapping and isn't directly mapped to a single column
+	ID        string    `json:"photoId" db:"photo_id"`     // Unique identifier
+	UserID    string    `json:"userId" db:"user_id"`       // ID of the user who uploaded the photo
+	ImageData []byte    `json:"imageData" db:"image_data"` // The photo data itself
+	Timestamp time.Time `json:"timestamp" db:"timestamp"`  // Timestamp of when the photo was uploaded
+	Likes     []Like    `json:"likes"`                     // Note: This requires a relational mapping and isn't directly mapped to a single column
+	Comments  []Comment `json:"comments"`                  // Note: This requires a relational mapping and isn't directly mapped to a single column
 }
 
 type Ban struct {
@@ -103,6 +103,20 @@ type AppDatabase interface {
 	FollowUser(followerID string, followedID string) error
 	UnfollowUser(followerID string, followedID string) error
 	GetUserIDByUsername(username string) (string, error)
+	GetUserByUsername(username string) (*User, error)
+	GetUser(userID string) (*User, error)
+	AddPhoto(photo Photo) error
+	GetPhotos() ([]Photo, error)
+	BanUser(bannedBy string, bannedUser string) error
+	UnbanUser(bannerID, bannedUserID string) error
+	GetBans() ([]Ban, error)
+	GetAllUsers() ([]User, error)
+	GetMyStream(userID string) ([]Photo, error)
+	DeleteComment(commentID string) error
+	AddComment(comment Comment) error
+	DeletePhoto(photoID string) error
+	GetCommentsByPhotoId(photoId string) ([]Comment, error)
+	GetFollowersByUsername(username string) ([]string, error)
 }
 
 type appdbimpl struct {
@@ -151,7 +165,7 @@ func New(db *sql.DB) (AppDatabase, error) {
         photo_id TEXT NOT NULL,
         PRIMARY KEY (user_id, photo_id),
         FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+        FOREIGN KEY (photo_id) REFERENCES new_photos(photo_id)
     );`)
 	if err != nil {
 		return nil, err
@@ -165,7 +179,7 @@ func New(db *sql.DB) (AppDatabase, error) {
         content TEXT NOT NULL,
         timestamp DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+        FOREIGN KEY (photo_id) REFERENCES new_photos(photo_id)
     );`)
 	if err != nil {
 		return nil, err
@@ -178,17 +192,17 @@ func New(db *sql.DB) (AppDatabase, error) {
         timestamp DATETIME NOT NULL,
         PRIMARY KEY (user_id, photo_id),
         FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
+        FOREIGN KEY (photo_id) REFERENCES new_photos(photo_id)
     );`)
 	if err != nil {
 		return nil, err
 	}
 
 	// Photo table
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS photos (
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS new_photos (
         photo_id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
-        url TEXT NOT NULL,
+		image_data BLOB,
         timestamp DATETIME NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     );`)
@@ -197,7 +211,7 @@ func New(db *sql.DB) (AppDatabase, error) {
 	}
 
 	// Ban table
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS bans (
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS new_bans (
         ban_id TEXT PRIMARY KEY,
         banned_by TEXT NOT NULL,
         banned_user TEXT NOT NULL,
@@ -217,33 +231,3 @@ func New(db *sql.DB) (AppDatabase, error) {
 func (db *appdbimpl) Ping() error {
 	return db.c.Ping()
 }
-
-/*doLogin: Handle user login. If the user does not exist, it will create and log the user in, returning a unique user identifier. This method corresponds to the simplified login API spec provided.
-
-setMyUserName: Allow a user to change their username. This requires updating the user's username in the database and handling any necessary validations.
-
-uploadPhoto: Enable users to upload photos. This method involves storing the photo information in the database and handling the photo data itself, likely storing it in a file system or a blob storage service.
-
-followUser: Allow a user to follow another user. This method requires updating the followers/following relationships in the database.
-
-unfollowUser: Allow a user to unfollow another user. Similar to followUser, but in reverse.
-
-banUser: Enable a user to ban another user, preventing the banned user from seeing any information about the banner.
-
-unbanUser: Allow a user to remove a ban on another user.
-
-getUserProfile: Retrieve and display a user's profile information, including their uploaded photos, the count of photos uploaded, and their followers/following lists.
-
-getMyStream: Fetch and display a stream of photos from users that the current user follows, in reverse chronological order, including like and comment counts.
-
-likePhoto: Allow a user to place a "like" on a photo.
-
-unlikePhoto: Allow a user to remove their "like" from a photo.
-
-commentPhoto: Enable users to add comments to a photo.
-
-uncommentPhoto: Allow users to delete their comments from a photo.
-
-deletePhoto: Allow users to remove a photo they have uploaded. This will also require removing all likes and comments associated with that photo.
-
-*/

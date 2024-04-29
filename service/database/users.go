@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"fmt"
+	"strings"
 )
 
 func generateRandomString(length int) (string, error) {
@@ -18,6 +19,24 @@ func generateRandomString(length int) (string, error) {
 		bytes[i] = charset[b%byte(len(charset))]
 	}
 	return string(bytes), nil
+}
+
+func (db *appdbimpl) GetUser(userID string) (*User, error) {
+	if userID == "" {
+		return nil, nil
+	}
+	var user User
+
+	// SQL query to select the user by user_id
+	query := "SELECT user_id, username FROM users WHERE user_id = ?"
+
+	// Execute the query
+	err := db.c.QueryRow(query, userID).Scan(&user.ID, &user.Username)
+	if err != nil {
+		// Other error occurred
+		return nil, err
+	}
+	return &user, nil
 }
 
 // checkUserIDExists now returns an error as well
@@ -48,26 +67,26 @@ func (db *appdbimpl) generateUniqueID() (string, error) {
 
 // AddUser uses the generateUniqueID method of appdbimpl
 func (db *appdbimpl) AddUser(user *User) error {
-	userID, err := db.generateUniqueID() // use the method of appdbimpl
+	userID, err := db.generateUniqueID()
 	if err != nil {
 		return fmt.Errorf("failed to generate user ID: %w", err)
 	}
 	user.ID = userID
 
-	// Prepare SQL statement for inserting a new user
 	stmt, err := db.c.Prepare("INSERT INTO users (user_id, username) VALUES (?, ?)")
 	if err != nil {
 		return fmt.Errorf("failed to prepare statement: %w", err)
 	}
 	defer stmt.Close()
 
-	// Execute SQL statement
 	_, err = stmt.Exec(user.ID, user.Username)
 	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			return fmt.Errorf("username already exists: %w", err)
+		}
 		return fmt.Errorf("failed to execute statement: %w", err)
 	}
 
-	// User ID is already set in the user struct, no need to return it
 	return nil
 }
 
@@ -84,6 +103,15 @@ func (db *appdbimpl) SetUsername(currentUsername, newUsername string) error {
 	}
 
 	return nil
+}
+
+func (db *appdbimpl) GetUserByUsername(username string) (*User, error) {
+	var user User
+	err := db.c.QueryRow("SELECT user_id, username FROM users WHERE username = ?", username).Scan(&user.ID, &user.Username)
+	if err == sql.ErrNoRows {
+		return nil, nil // User not found is not an error here
+	}
+	return &user, err
 }
 
 func (db *appdbimpl) GetUserProfile(username string) (*User, error) {
@@ -127,7 +155,7 @@ func (db *appdbimpl) GetUserProfile(username string) (*User, error) {
 	}
 
 	// Fetch photos
-	rows, err = db.c.Query("SELECT photo_id FROM user_photos WHERE user_id = ?", user.ID)
+	rows, err = db.c.Query("SELECT photo_id FROM new_photos WHERE user_id = ?", user.ID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch photos: %w", err)
 	}
@@ -169,4 +197,44 @@ func (db *appdbimpl) GetUserIDByUsername(username string) (string, error) {
 		return "", fmt.Errorf("query error: %w", err)
 	}
 	return userID, nil
+}
+
+// getAllUsers
+func (db *appdbimpl) GetAllUsers() ([]User, error) {
+	rows, err := db.c.Query("SELECT user_id, username FROM users")
+	if err != nil {
+		return nil, fmt.Errorf("failed to query users: %w", err)
+	}
+	defer rows.Close()
+
+	var users []User
+	for rows.Next() {
+		var user User
+		err = rows.Scan(&user.ID, &user.Username)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan user: %w", err)
+		}
+		users = append(users, user)
+	}
+
+	return users, nil
+}
+
+func (db *appdbimpl) GetFollowersByUsername(username string) ([]string, error) {
+	var followers []string
+	query := `SELECT follower_id FROM followers WHERE user_id = (SELECT user_id FROM users WHERE username = ?)`
+	rows, err := db.c.Query(query, username)
+	if err != nil {
+		return nil, fmt.Errorf("error querying followers: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var followerID string
+		if err := rows.Scan(&followerID); err != nil {
+			return nil, fmt.Errorf("error scanning follower ID: %w", err)
+		}
+		followers = append(followers, followerID)
+	}
+	return followers, nil
 }

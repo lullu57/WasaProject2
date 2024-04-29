@@ -30,25 +30,26 @@ paths:
               type: object
               properties:
                 name:
-                  type: string
-                  description: User's name
-                  minLength: 3
-                  maxLength: 50
-                  pattern: "^[a-zA-Z0-9_]+$"  # Add a pattern for every string property
-              description: General user object
-                  
-          
+                  type: string 
+                  example: Maria 
+                  pattern: 'ˆ.*?$' 
+                  minLength: 3 
+                  maxLength: 16
         required: true
       responses:
         '201':
-          description: action successful
+          description: User log-in action successful
           content:
-            text/plain:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Success'
-                
-        "400": { $ref: "#/components/responses/BadRequest" }
-        "500": { $ref: "#/components/responses/ServerError" }
+                type: object 
+                properties:
+                  identifier:
+                  # change here if you decide to use an integer # or any other type of identifier
+                    type: string
+                    example: "abcdef012345"  
+        '400': { $ref: "#/components/responses/BadRequest" }
+        '500': { $ref: "#/components/responses/ServerError" }
   /users:
     post:
       tags: [user]
@@ -202,6 +203,66 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
+  /users/{username}/bans:
+    parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/username'
+    post:
+      tags: [user]
+      summary: Ban User
+      description: Ban a user.
+      operationId: banUser
+      responses:
+        '200':
+          description: action successful
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Success'
+
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+    delete:
+      tags: [user]
+      summary: Unban User
+      description: Unban a user.
+      operationId: unbanUser
+      responses:
+        '200':
+          description: action successful
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Success'
+
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+  /bans:
+    get:
+      tags: [user]
+      summary: Get Banned Users
+      description: Get the list of banned users.
+      operationId: getBannedUsers
+      responses:
+        '200':
+          description: Banned users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                  minItems: 0
+                  maxItems: 100
+
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
   /comments/{commentId}: 
     parameters:
       - name: commentId
@@ -277,7 +338,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /photos/:
+  /photos:
     post:
       tags: [photo]
       summary: Upload Photo
@@ -384,23 +445,6 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/photoId'
-    get:
-      tags: [photo]
-      summary: Get Photo
-      description: Get a photo.
-      operationId: getPhoto
-      responses:
-        '200':
-          description: Photo retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Photo'
-
-        "400": { $ref: "#/components/responses/BadRequest" }
-        "401": { $ref: "#/components/responses/Unauthorized" }
-        "500": { $ref: "#/components/responses/ServerError" }
-
     delete:
       tags: [photo]
       summary: Delete Photo

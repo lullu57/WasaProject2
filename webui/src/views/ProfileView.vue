@@ -1,6 +1,29 @@
+<template>
+    <div class="profile-view">
+      <div v-if="userProfile" class="info-container">
+        <p>Username: {{ userProfile.username }}</p>
+        <p>Followers: {{ userProfile.followers.length }}</p>
+        <p>Following: {{ userProfile.following.length }}</p>
+        <p>Posts: {{ userProfile.photos.length }}</p>
+        <button v-if="!isOwnProfile" @click="toggleFollow">
+          {{ userProfile.isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
+        <button v-if="!isOwnProfile" @click="toggleBan">
+          {{ userProfile.isBanned ? 'Unban' : 'Ban' }}
+        </button>
+      </div>
+      <div v-else>
+        <p>No profile data available.</p>
+      </div>
+      <div class="gallery">
+        <ImageComponent v-for="photo in userProfile.photos" :key="photo.photoId" :photoDetails="photo" />
+      </div>
+    </div>
+</template>
+
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import api from "@/services/api"; 
+import api from "@/services/axios"; 
 import ImageComponent from '@/components/ImageComponent.vue';
 
 const props = defineProps({
@@ -48,28 +71,6 @@ const toggleBan = async () => {
 onMounted(fetchUserProfile);
 </script>
 
-<template>
-    <div class="profile-view">
-      <div v-if="userProfile" class="info-container">
-        <p>Username: {{ userProfile.username }}</p>
-        <p>Followers: {{ userProfile.followers.length }}</p>
-        <p>Following: {{ userProfile.following.length }}</p>
-        <p>Posts: {{ userProfile.photos.length }}</p>
-        <button v-if="!isOwnProfile" @click="toggleFollow">
-          {{ userProfile.isFollowing ? 'Unfollow' : 'Follow' }}
-        </button>
-        <button v-if="!isOwnProfile" @click="toggleBan">
-          {{ userProfile.isBanned ? 'Unban' : 'Ban' }}
-        </button>
-      </div>
-      <div v-else>
-        <p>No profile data available.</p>
-      </div>
-      <div class="gallery">
-        <ImageComponent v-for="photo in userProfile.photos" :key="photo.photoId" :photoDetails="photo" />
-      </div>
-    </div>
-</template>
 
 <style scoped>
 .profile-view {

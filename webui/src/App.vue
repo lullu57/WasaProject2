@@ -52,6 +52,12 @@ export default {}
 								Item 1
 							</RouterLink>
 						</li>
+						<li class="nav-item">
+							<RouterLink to="{'/profile/${userId}''}" class="nav-link">
+								<svg class="feather"><use href="/feather-sprite-v4.29.0.svg#user"/></svg>
+								Profile
+							</RouterLink>
+						</li>
 					</ul>
 				</div>
 			</nav>

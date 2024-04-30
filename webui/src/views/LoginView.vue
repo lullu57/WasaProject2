@@ -8,7 +8,8 @@
   </template>
   
   <script>
-  import axios from './services/axios.js'
+  import axios from 'axios';
+  import api from "@/services/axios"; 
   
   export default {
     data() {
@@ -20,10 +21,12 @@
     methods: {
       async login() {
         try {
-          const response = await axios.post('/session', { name: this.username });
-          localStorage.setItem('userId', response.data.identifier);
-          this.$router.push('/'); // Redirect to home or dashboard
-          console.log('Logged in successfully');
+          const response = await api.post('/session', { name: this.username });
+          console.log(response.data)
+          localStorage.setItem("userId", response.data);
+          axios.defaults.headers.common['Authorization'] = response.data;
+          this.$router.push('/'); // Redirect to home after successful login
+          location.reload()
         } catch (err) {
           console.log(err);
           this.error = 'Failed to login. Please try again.';

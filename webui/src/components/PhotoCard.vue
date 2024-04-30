@@ -112,10 +112,10 @@ export default {
   padding: 10px;
   margin-bottom: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  size: 1000px;
+  size: 2000px;
 }
 
 .photo-image {

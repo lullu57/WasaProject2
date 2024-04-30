@@ -73,6 +73,7 @@ const fetchPhotoDetails = async (photoIds) => {
 };
 
 const toggleFollow = async () => {
+  console.log(userProfile.value.isFollowing)
   const method = userProfile.value.isFollowing ? 'delete' : 'post';
   const endpoint = `/users/follows/${userId}`;
   await api[method](endpoint, {} , {
@@ -84,6 +85,7 @@ const toggleFollow = async () => {
 };
 
 const toggleBan = async () => {
+  console.log(userProfile.value.isBanned)
   const method = userProfile.value.isBanned ? 'delete' : 'post';
   const endpoint = `/users/bans/${userId}`;
   await api[method](endpoint, {} , {

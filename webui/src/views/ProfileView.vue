@@ -29,7 +29,7 @@ import api from "@/services/axios";
 
 const route = useRoute(); // Use useRoute to access the route parameters
 
-const userId = route.params.userId; // Access userId from route parameters
+const userId = route.params.profileId; // Access userId from route parameters
 
 const userProfile = ref(null);
 const localStorageUserId = localStorage.getItem('userId'); // Access once and use in computed property

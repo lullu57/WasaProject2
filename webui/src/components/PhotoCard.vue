@@ -42,14 +42,13 @@
         console.log(this.isLiked);
         console.log(this.photo.likesCount); 
         console.log(this.photo.photoId);
-        console.log(photo.isLiked);
         if (this.isLiked) {
           this.photo.likesCount++;
-          await api.post(`/photos/likes/${this.photo.photoId}`);
+          await api.post(`/photos/${this.photo.photoId}/likes`);
           this.isLiked = !this.isLiked;
         } else {
           this.photo.likesCount--;
-          await api.delete(`/photos/likes/${this.photo.photoId}`);
+          await api.delete(`/photos/${this.photo.photoId}/likes`);
           this.isLiked = !this.isLiked;
         }
         
@@ -59,7 +58,7 @@
       },
       async postComment() {
         if (this.newComment.trim() !== '') {
-          const response = await api.post(`/photos/comments/${this.photo.photoId}`, { content: this.newComment });
+          const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment });
           this.photo.comments.push({ // Simulating adding the comment to the list
             username: "YourUsername", // This should ideally come from the server response or a global state
             content: this.newComment,

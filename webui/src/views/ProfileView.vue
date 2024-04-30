@@ -35,7 +35,7 @@ const userProfile = ref(null);
 const isOwnProfile = computed(() => props.userId === localStorage.getItem('userId'));
 
 const fetchUserProfile = async () => {
-  console.log(props.userId)
+  console.log(props)
   console.log(localStorage.getItem('userId'))  
   try {
     const response = await api.get(`/users/id/${props.userId}`);

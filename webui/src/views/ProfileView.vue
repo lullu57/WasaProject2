@@ -37,14 +37,17 @@ const userProfile = ref(null);
 const detailedPhotos = ref([]);
 const localStorageUserId = localStorage.getItem('userId');
 const isOwnProfile = computed(() => userId === localStorageUserId);
+console.log('isOwnProfile', isOwnProfile.value);
 
 const fetchUserProfile = async () => {
   try {
     const response = await api.get(`/users/id/${userId}`);
+    console.log('response', response);
     userProfile.value = response.data;
     if (userProfile.value && userProfile.value.photos) {
       fetchPhotoDetails(userProfile.value.photos);
     }
+    console.log('userProfile', userProfile.value);
     if (!isOwnProfile.value) { // Check if the profile is not the user's own
       await checkIfUserIsFollowed(); // Check if the user is following the profile user
       await checkIfUserIsBanned(); // Check if the user has banned the profile user
@@ -74,7 +77,14 @@ const fetchPhotoDetails = async (photoIds) => {
 
 const checkIfUserIsFollowed = async () => {
   try {
-    const response = await api.get(`/follows/${userId}`);
+
+  const method = 'get'
+  const endpoint = `/follows/${userId}`;
+  const response = await api[method](endpoint, {} , {
+    headers: {
+      Authorization: localStorageUserId
+    }
+  });
     userProfile.value.isFollowing = response.data.isFollowing;
   } catch (error) {
     console.error("Error checking if user is followed:", error);
@@ -83,7 +93,13 @@ const checkIfUserIsFollowed = async () => {
 
 const checkIfUserIsBanned = async () => {
   try {
-    const response = await api.get(`/bans/${userId}`);
+    const method = 'get'
+    const endpoint = `/bans/${userId}`;
+    const response = await api[method](endpoint, {} , {
+      headers: {
+        Authorization: localStorageUserId
+      }
+    });
     userProfile.value.isBanned = response.data.isBanned;
   } catch (error) {
     console.error("Error checking if user is banned:", error);
@@ -114,8 +130,6 @@ const toggleBan = async () => {
 
 onMounted(fetchUserProfile);
 </script>
-
-
 
 
 <style scoped>

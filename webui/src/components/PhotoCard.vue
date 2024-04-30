@@ -42,7 +42,7 @@ export default {
     async toggleLike() {
       const config = {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('userId')}` // Assuming you use Bearer tokens
+          Authorization: `${localStorage.getItem('userId')}` // Assuming you use Bearer tokens
         }
       };
       
@@ -63,7 +63,7 @@ export default {
       if (this.newComment.trim() !== '') {
         const config = {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('userId')}`
+            Authorization: `${localStorage.getItem('userId')}`
           }
         };
         const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);

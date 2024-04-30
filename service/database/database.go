@@ -128,6 +128,7 @@ type AppDatabase interface {
 	GetFollowersByUsername(username string) ([]string, error)
 	GetUserProfileByID(userID string) (*User, error)
 	GetPhoto(photoId string) (*PhotoDetail, error)
+	GetUsername(userID string) (string, error)
 }
 type appdbimpl struct {
 	c *sql.DB

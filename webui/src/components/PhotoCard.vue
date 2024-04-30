@@ -25,7 +25,7 @@
   
   
 <script>
-import api from '@/services/axios'; // Assuming axios is configured globally
+import api from '@/services/axios';
 
 export default {
   props: {
@@ -42,19 +42,18 @@ export default {
     async toggleLike() {
       const config = {
         headers: {
-          Authorization: `${localStorage.getItem('userId')}` // Assuming you use Bearer tokens
+          Authorization: `${localStorage.getItem('token')}`  // Adjusted to use a proper token header if applicable
         }
       };
-      console.log(this.isLiked);
+
       if (!this.isLiked) {
         this.photo.likesCount++;
         await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);
-        this.isLiked = !this.isLiked;
       } else {
         this.photo.likesCount--;
         await api.delete(`/photos/${this.photo.photoId}/likes`, config);
-        this.isLiked = !this.isLiked;
       }
+      this.isLiked = !this.isLiked;
     },
     toggleComments() {
       this.showComments = !this.showComments;
@@ -63,12 +62,19 @@ export default {
       if (this.newComment.trim() !== '') {
         const config = {
           headers: {
-            Authorization: `${localStorage.getItem('userId')}`
+            Authorization: `${localStorage.getItem('token')}`
           }
         };
         const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);
+        let username = 'You';  // Default username
+        try {
+          const userRes = await api.get(`/username/${localStorage.getItem('userId')}`, config);
+          username = userRes.data.username;  // Fetch the username dynamically
+        } catch (error) {
+          console.error('Failed to fetch username', error);
+        }
         this.photo.comments.push({
-          username: "YourUsername", // Use actual username from your auth state or response
+          username: username,
           content: this.newComment,
           commentId: response.data.commentId
         });
@@ -76,11 +82,12 @@ export default {
       }
     },
     formatDate(value) {
-      return new Date(value).toLocaleString(); // Formatting the date
+      return new Date(value).toLocaleString();
     }
   }
 }
 </script>
+
 
 
   

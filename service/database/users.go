@@ -293,3 +293,12 @@ func (db *appdbimpl) GetFollowersByUsername(username string) ([]string, error) {
 	}
 	return followers, nil
 }
+
+func (db *appdbimpl) GetUsername(userID string) (string, error) {
+	var username string
+	err := db.c.QueryRow("SELECT username FROM users WHERE user_id = ?", userID).Scan(&username)
+	if err != nil {
+		return "", fmt.Errorf("error getting username: %w", err)
+	}
+	return username, nil
+}

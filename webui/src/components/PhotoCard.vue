@@ -47,6 +47,7 @@ export default {
         }
       };
       console.log(this.isLiked)
+      console.log(this)
       if (!this.isLiked) {
         this.photo.likesCount++;
         await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);

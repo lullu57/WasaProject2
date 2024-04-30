@@ -11,7 +11,7 @@ const router = createRouter({
 		{path: '/link2', component: HomeView},
 		{path: '/some/:id/link', component: HomeView},
 		{ path: '/login', name: 'Login', component: LoginView },
-  		{ path: '/profile', name: 'Profile', component: ProfileView, meta: { requiresAuth: true } }
+  		{ path: '/profile/:profileId', name: 'Profile', component: ProfileView, meta: { requiresAuth: true } }
 	]
 })
 

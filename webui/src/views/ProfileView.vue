@@ -30,11 +30,11 @@ const props = defineProps({
 });
 
 const userProfile = ref(null);
-const isOwnProfile = computed(() => props.username === localStorage.getItem('userId'));
+const isOwnProfile = computed(() => props.userId === localStorage.getItem('userId'));
 
 const fetchUserProfile = async () => {
   try {
-    const response = await api.get(`/users/${props.username}`);
+    const response = await api.get(`/users/id/${props.userId}`);
     userProfile.value = response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -42,7 +42,7 @@ const fetchUserProfile = async () => {
 };
 
 const toggleFollow = async () => {
-  const endpoint = `/users/${props.username}/follows`;
+  const endpoint = `/users/follows/${props.username}`;
   try {
     await api({
       method: userProfile.value.isFollowing ? 'delete' : 'post',
@@ -55,7 +55,7 @@ const toggleFollow = async () => {
 };
 
 const toggleBan = async () => {
-  const endpoint = `/users/${props.username}/bans`;
+  const endpoint = `/users/bans/${props.username}`;
   try {
     await api({
       method: userProfile.value.isBanned ? 'delete' : 'post',
@@ -68,6 +68,7 @@ const toggleBan = async () => {
 };
 
 onMounted(fetchUserProfile);
+
 </script>
 
 

@@ -25,7 +25,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -46,6 +45,10 @@ const fetchUserProfile = async () => {
     if (userProfile.value && userProfile.value.photos) {
       fetchPhotoDetails(userProfile.value.photos);
     }
+    if (!isOwnProfile.value) { // Check if the profile is not the user's own
+      await checkIfUserIsFollowed(); // Check if the user is following the profile user
+      await checkIfUserIsBanned(); // Check if the user has banned the profile user
+    }
   } catch (error) {
     console.error("Error fetching user profile:", error);
   }
@@ -55,25 +58,39 @@ const fetchPhotoDetails = async (photoIds) => {
   detailedPhotos.value = await Promise.all(photoIds.map(async (id) => {
     try {
       const res = await api.get(`/photos/${id}`);
-      console.log(res.data);
       const photo = res.data;
-      // Fetch usernames for each comment
       photo.comments = await Promise.all(photo.comments.map(async (comment) => {
         const userResponse = await api.get(`/username/${comment.userId}`);
         comment.username = userResponse.data.username;
         return comment;
       }));
-      console.log(photo);
       return photo;
     } catch (error) {
       console.error("Error fetching photo details:", error);
-      return null; // Handle errors or missing data gracefully
+      return null;
     }
   }));
 };
 
+const checkIfUserIsFollowed = async () => {
+  try {
+    const response = await api.get(`/follows/${userId}`);
+    userProfile.value.isFollowing = response.data.isFollowing;
+  } catch (error) {
+    console.error("Error checking if user is followed:", error);
+  }
+};
+
+const checkIfUserIsBanned = async () => {
+  try {
+    const response = await api.get(`/bans/${userId}`);
+    userProfile.value.isBanned = response.data.isBanned;
+  } catch (error) {
+    console.error("Error checking if user is banned:", error);
+  }
+};
+
 const toggleFollow = async () => {
-  console.log(userProfile.value.isFollowing)
   const method = userProfile.value.isFollowing ? 'delete' : 'post';
   const endpoint = `/users/follows/${userId}`;
   await api[method](endpoint, {} , {
@@ -85,7 +102,6 @@ const toggleFollow = async () => {
 };
 
 const toggleBan = async () => {
-  console.log(userProfile.value.isBanned)
   const method = userProfile.value.isBanned ? 'delete' : 'post';
   const endpoint = `/users/bans/${userId}`;
   await api[method](endpoint, {} , {

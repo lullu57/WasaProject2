@@ -45,7 +45,7 @@ export default {
           Authorization: `${localStorage.getItem('userId')}` // Assuming you use Bearer tokens
         }
       };
-      
+      console.log(this.isLiked);
       if (!this.isLiked) {
         this.photo.likesCount++;
         await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);

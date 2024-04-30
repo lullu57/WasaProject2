@@ -12,9 +12,10 @@
         <div class="comment-form">
         <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
         <button @click="postComment" class="post-comment">Post</button> 
-        </div>
+        
         <div class="comment" v-for="comment in photo.comments" :key="comment.commentId">
           <strong>{{ comment.username }}</strong>: {{ comment.content }}
+          </div>
         </div>
       </div>
     </div>
@@ -114,11 +115,15 @@ export default {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 90%; /* Increase width of the card */
+  max-width: 600px; /* Set a max width */
 }
 
 .photo-image {
   max-width: 100%; /* ensures the image is not wider than the card */
-  max-height: 400px; /* sets a maximum height for the image */
+  max-height: 300px; /* Adjust height */
+  width: auto; /* maintains the aspect ratio */
+  height: auto; /* maintains the aspect ratio */
   object-fit: contain; /* ensures the image fits nicely within the constraints */
   border-radius: 4px;
 }
@@ -130,7 +135,7 @@ export default {
 }
 
 .photo-actions button {
-  background-color: #ff5e8a; /* a light reddish-pink color for like button */
+  background-color: #ff5e8a; /* Light reddish-pink color for like button */
   color: white;
   border: none;
   border-radius: 4px;
@@ -140,18 +145,18 @@ export default {
 }
 
 .photo-actions button:hover {
-  background-color: #ff3860; /* a deeper shade on hover */
+  background-color: #ff3860; /* Deeper shade on hover */
 }
 
 .comments-section {
   margin-top: 10px;
-  width: 100%; /* ensures the comments section uses the full width of the card */
+  width: 100%; /* Ensures the comments section uses the full width of the card */
 }
 
 .comment-form {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* ensures the form uses the full width of the card */
+  width: 100%; /* Ensures the form uses the full width of the card */
   margin-top: 5px;
 }
 
@@ -161,12 +166,16 @@ export default {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 80%; /* Reduce the width of the text box */
 }
 
 button.post-comment {
-  background-color: #007bff; /* primary button color */
-  padding: 5px 8px; /* smaller padding */
-  font-size: 0.8rem; /* smaller font size */
+  background-color: #007bff; /* Primary button color */
+  padding: 5px 8px; /* Smaller padding */
+  font-size: 0.8rem; /* Smaller font size */
+  border: none;
+  color: white;
+  border-radius: 4px;
 }
 
 .comment {
@@ -175,5 +184,12 @@ button.post-comment {
   border-radius: 3px;
   margin-top: 2px;
 }
+
+.username {
+  font-size: 0.9rem; /* Smaller font size for usernames */
+  color: #555; /* Dark gray for better readability */
+  margin-bottom: 2px;
+}
 </style>
+
 

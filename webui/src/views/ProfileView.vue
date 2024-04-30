@@ -58,9 +58,8 @@ const fetchPhotoDetails = async (photoIds) => {
       console.log(res.data);
       const photo = res.data;
       // Fetch usernames for each comment
-      console.log(photo.comments);
       photo.comments = await Promise.all(photo.comments.map(async (comment) => {
-        const userResponse = await api.get(`/username/${comment.userID}`);
+        const userResponse = await api.get(`/username/${comment.userId}`);
         comment.username = userResponse.data.username;
         return comment;
       }));

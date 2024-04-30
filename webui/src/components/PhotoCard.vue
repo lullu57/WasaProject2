@@ -116,7 +116,8 @@ export default {
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
+  
 }
 
 .photo-image {
@@ -140,6 +141,7 @@ export default {
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  object-fit: contain;
 }
 
 .photo-actions button:hover {

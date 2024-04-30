@@ -2,7 +2,7 @@
   <div class="photo-card">
     <img :src="'data:image/jpeg;base64,' + photo.imageData" alt="Photo" class="photo-image"/>
     <div class="photo-info">
-      <h3>{{ photo.username }}</h3>
+      <h4>{{ photo.username }}</h4>
       <p>{{ formatDate(photo.timestamp) }}</p>
       <div class="photo-actions">
         <button @click="toggleLike">{{ photo.isLiked ? 'Unlike' : 'Like' }} ({{ photo.likesCount }})</button>
@@ -107,84 +107,79 @@ export default {
 
 <style scoped>
 .photo-card {
-  border: 2px solid #ccc;
+  border: 2px solid #ccc; /* increased border thickness for better definition */
   border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 15px; /* increased padding for better spacing */
+  margin-bottom: 20px; /* more vertical space between cards */
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 1200px;
-  
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* slightly heavier shadow for depth */
+  width: 100%; /* ensures it's responsive to container size */
+  max-width: 800px; /* suitable max-width for content balancing */
 }
 
 .photo-image {
-  max-width: 100%; /* ensures the image is not wider than the card */
-  max-height: 900px; /* sets a maximum height for the image */
-  object-fit: contain; /* ensures the image fits nicely within the constraints */
+  width: 100%; /* ensures the image is responsive */
+  height: auto; /* maintains aspect ratio */
+  max-height: 600px; /* increased maximum height for better display */
+  object-fit: contain; /* ensures the image fits without distortion */
   border-radius: 4px;
 }
 
 .photo-info {
-  width: 100%;
+  width: 100%; /* ensures text alignment container is full-width */
   text-align: center;
   padding-top: 10px;
 }
 
 .photo-actions button {
-  background-color: #ff5e8a; /* a light reddish-pink color for like button */
+  background-color: #ff5e8a; /* softer pink for like button */
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 5px 10px;
+  padding: 8px 16px; /* larger buttons for easier interaction */
   cursor: pointer;
   transition: background-color 0.3s;
-  object-fit: contain;
 }
 
 .photo-actions button:hover {
-  background-color: #d11a3e; /* a deeper shade on hover */
+  background-color: #df0b35; /* deeper pink on hover for interaction feedback */
 }
 
 .comments-section {
+  width: 100%; /* full width to align with the photo card */
   margin-top: 10px;
-  width: 100%; /* ensures the comments section uses the full width of the card */
 }
 
 .comment-form {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* ensures the form uses the full width of the card */
-  margin-top: 5px;
+  width: 100%; /* full width for better layout control */
+  margin-top: 10px; /* added space above the comment form */
 }
 
 .comment-input {
-  flex-grow: 1;
-  margin-right: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
+  flex-grow: 1; /* allows input to fill space */
+  border: 1px solid #ccc; /* refined border styling */
   border-radius: 4px;
+  padding: 10px; /* increased padding for better text entry */
 }
 
 button.post-comment {
-  background-color: #1980ed; /* primary button color */
-  padding: 5px 8px; /* smaller padding */
-  font-size: 0.8rem; /* smaller font size */
+  background-color: #007bff; /* blue for post button */
+  color: white; /* text color for readability */
+  border-radius: 4px; /* rounded corners match other design elements */
+  padding: 8px 10px; /* adjusted padding for size fitting */
+  font-size: 0.9rem; /* increased font size for readability */
 }
 
 .comment {
-  background-color: #d7d6d6;
-  padding: 5px;
-  border-radius: 3px;
-  margin-top: 2px;
-}
-
-.username {
-  font-size: 0.7rem; /* Smaller font size for usernames */
-  color: #555; /* Dark gray for better readability */
-  margin-bottom: 2px;
+  background-color: #f0f0f0; /* light gray background for comments */
+  padding: 8px; /* increased padding for aesthetic spacing */
+  border-radius: 4px; /* consistent rounded corners */
+  margin-top: 4px; /* space between comments */
 }
 </style>
+
 

@@ -121,7 +121,7 @@ export default {
 
 .photo-image {
   max-width: 100%; /* ensures the image is not wider than the card */
-  max-height: 600px; /* sets a maximum height for the image */
+  max-height: 900px; /* sets a maximum height for the image */
   object-fit: contain; /* ensures the image fits nicely within the constraints */
   border-radius: 4px;
 }

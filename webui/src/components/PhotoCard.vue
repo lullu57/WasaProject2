@@ -107,23 +107,20 @@ export default {
 
 <style scoped>
 .photo-card {
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  width: 90%; /* Increase width of the card */
-  max-width: 600px; /* Set a max width */
+  size: 1000px;
 }
 
 .photo-image {
   max-width: 100%; /* ensures the image is not wider than the card */
-  max-height: 300px; /* Adjust height */
-  width: auto; /* maintains the aspect ratio */
-  height: auto; /* maintains the aspect ratio */
+  max-height: 600px; /* sets a maximum height for the image */
   object-fit: contain; /* ensures the image fits nicely within the constraints */
   border-radius: 4px;
 }
@@ -135,7 +132,7 @@ export default {
 }
 
 .photo-actions button {
-  background-color: #ff5e8a; /* Light reddish-pink color for like button */
+  background-color: #ff5e8a; /* a light reddish-pink color for like button */
   color: white;
   border: none;
   border-radius: 4px;
@@ -145,18 +142,18 @@ export default {
 }
 
 .photo-actions button:hover {
-  background-color: #ff3860; /* Deeper shade on hover */
+  background-color: #d11a3e; /* a deeper shade on hover */
 }
 
 .comments-section {
   margin-top: 10px;
-  width: 100%; /* Ensures the comments section uses the full width of the card */
+  width: 100%; /* ensures the comments section uses the full width of the card */
 }
 
 .comment-form {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* Ensures the form uses the full width of the card */
+  width: 100%; /* ensures the form uses the full width of the card */
   margin-top: 5px;
 }
 
@@ -166,30 +163,25 @@ export default {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 80%; /* Reduce the width of the text box */
 }
 
 button.post-comment {
-  background-color: #007bff; /* Primary button color */
-  padding: 5px 8px; /* Smaller padding */
-  font-size: 0.8rem; /* Smaller font size */
-  border: none;
-  color: white;
-  border-radius: 4px;
+  background-color: #1980ed; /* primary button color */
+  padding: 5px 8px; /* smaller padding */
+  font-size: 0.8rem; /* smaller font size */
 }
 
 .comment {
-  background-color: #f0f0f0;
+  background-color: #d7d6d6;
   padding: 5px;
   border-radius: 3px;
   margin-top: 2px;
 }
 
 .username {
-  font-size: 0.9rem; /* Smaller font size for usernames */
+  font-size: 0.7rem; /* Smaller font size for usernames */
   color: #555; /* Dark gray for better readability */
   margin-bottom: 2px;
 }
 </style>
-
 

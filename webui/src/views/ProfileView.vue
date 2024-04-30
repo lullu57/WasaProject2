@@ -34,7 +34,8 @@ const userId = route.params.userId; // Access userId from route parameters
 const userProfile = ref(null);
 const localStorageUserId = localStorage.getItem('userId'); // Access once and use in computed property
 const isOwnProfile = computed(() => userId === localStorageUserId);
-
+console.log(userId, localStorageUserId, isOwnProfile.value);
+console.log(route.params);
 const fetchUserProfile = async () => {
   try {
     const response = await api.get(`/users/id/${userId}`);

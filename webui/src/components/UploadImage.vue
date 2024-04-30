@@ -49,13 +49,13 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   button {
     margin-top: 10px;
     padding: 10px 20px;
-    display: inline;
-    background-color: #007bff;
+    background-color: #86c457;
   }
   
   </style>

@@ -116,14 +116,14 @@ export default {
   align-items: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* slightly heavier shadow for depth */
   width: 100%; /* ensures it's responsive to container size */
-  max-width: 1200px; /* suitable max-width for content balancing */
+  max-width: 800px; /* suitable max-width for content balancing */
   height: auto; /* allows for variable height based on content */
 }
 
 .photo-image {
   width: 100%; /* ensures the image is responsive */
   height: auto; /* maintains aspect ratio */
-  max-height: 1000px; /* increased maximum height for better display */
+  max-height: 600px; /* increased maximum height for better display */
   object-fit: contain; /* ensures the image fits without distortion */
   border-radius: 2px;
 }

@@ -11,7 +11,6 @@ const router = createRouter({
             path: '/profile/:profileId',
             name: 'Profile',
             component: ProfileView,
-            props: true, // Ensures that route params get passed as props to the component
             meta: { requiresAuth: true }
         }
 	]	

@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
+import UploadImage from './components/UploadImage.vue';
 
 const userId = ref(localStorage.getItem('userId'));
-console.log(userId)
 const isAuthenticated = computed(() => !!userId.value);
 
 function logout() {
@@ -55,6 +55,7 @@ function logout() {
       </nav>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+		<UploadImage v-if="isAuthenticated"/>
         <RouterView />
       </main>
     </div>

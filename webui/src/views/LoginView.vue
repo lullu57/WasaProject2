@@ -23,7 +23,9 @@
           const response = await axios.post('/session', { name: this.username });
           localStorage.setItem('userId', response.data.identifier);
           this.$router.push('/'); // Redirect to home or dashboard
+          console.log('Logged in successfully');
         } catch (err) {
+          console.log(err);
           this.error = 'Failed to login. Please try again.';
           console.error(err);
         }

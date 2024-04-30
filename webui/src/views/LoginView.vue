@@ -8,7 +8,7 @@
   </template>
   
   <script>
-  import axios from './services/axios'
+  import axios from './services/axios.js'
   
   export default {
     data() {

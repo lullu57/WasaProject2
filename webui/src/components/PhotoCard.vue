@@ -116,7 +116,7 @@ export default {
   align-items: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* slightly heavier shadow for depth */
   width: 100%; /* ensures it's responsive to container size */
-  max-width: 350px; /* suitable max-width for content balancing */
+  max-width: 300px; /* suitable max-width for content balancing */
   height: auto; /* allows for variable height based on content */
 }
 
@@ -162,7 +162,7 @@ export default {
 .comment-form {
   display: flex;
   justify-content: space-between;
-  width: 80%; /* full width for better layout control */
+  width: 100%; /* full width for better layout control */
   margin-top: 10px; /* added space above the comment form */
   margin-bottom: 5px;
 }

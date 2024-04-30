@@ -39,14 +39,20 @@
     },
     methods: {
       async toggleLike() {
+        console.log(this.isLiked);
+        console.log(this.photo.likesCount); 
+        console.log(this.photo.photoId);
+        console.log(photo.isLiked);
         if (this.isLiked) {
           this.photo.likesCount++;
           await api.post(`/photos/likes/${this.photo.photoId}`);
+          this.isLiked = !this.isLiked;
         } else {
           this.photo.likesCount--;
           await api.delete(`/photos/likes/${this.photo.photoId}`);
+          this.isLiked = !this.isLiked;
         }
-        this.isLiked = !this.isLiked;
+        
       },
       toggleComments() {
         this.showComments = !this.showComments;

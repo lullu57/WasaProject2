@@ -47,6 +47,16 @@
   <style scoped>
   .upload-container {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
+
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    display: inline;
+    background-color: #007bff;
+  }
+  
   </style>
   

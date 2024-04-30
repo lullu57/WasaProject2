@@ -1,7 +1,7 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ProfileView from '../views/ProfileView.vue'
-import Login from '../views/Login.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -10,7 +10,7 @@ const router = createRouter({
 		{path: '/link1', component: HomeView},
 		{path: '/link2', component: HomeView},
 		{path: '/some/:id/link', component: HomeView},
-		{ path: '/login', name: 'Login', component: Login },
+		{ path: '/login', name: 'Login', component: LoginView },
   		{ path: '/profile', name: 'Profile', component: ProfileView, meta: { requiresAuth: true } }
 	]
 })
@@ -25,5 +25,5 @@ router.beforeEach((to, from, next) => {
 	  next();
 	}
   });
-  
+
 export default router

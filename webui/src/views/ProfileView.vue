@@ -16,7 +16,11 @@
       <p>No profile data available.</p>
     </div>
     <div class="gallery">
-      <!-- Display gallery items if any -->
+      <PhotoCard 
+        v-for="photo in userProfile.photos" 
+        :key="photo.id"
+        :photo="photo"
+      />
     </div>
   </div>
 </template>

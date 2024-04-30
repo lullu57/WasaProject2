@@ -91,3 +91,51 @@ func (db *appdbimpl) GetMyStream(userID string) ([]Photo, error) {
 	}
 	return photos, nil
 }
+
+func (db *appdbimpl) GetPhoto(photoId string) (*PhotoDetail, error) {
+	var photo PhotoDetail
+
+	// First, fetch the basic photo details and count of likes
+	err := db.c.QueryRow(`
+    SELECT p.photo_id, p.user_id, u.username, p.image_data, p.timestamp,
+           (SELECT COUNT(*) FROM likes WHERE photo_id = p.photo_id) AS likes_count
+    FROM new_photos p
+    JOIN users u ON p.user_id = u.user_id
+    WHERE p.photo_id = ?`, photoId).Scan(
+		&photo.PhotoID, &photo.UserID, &photo.Username, &photo.ImageData, &photo.Timestamp, &photo.LikesCount,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Query for comments related to the photo
+	commentsQuery := `
+    SELECT c.comment_id, c.user_id, u.username, c.content, c.timestamp
+    FROM comments c
+    JOIN users u ON u.user_id = c.user_id
+    WHERE c.photo_id = ?
+    ORDER BY c.timestamp DESC
+    `
+	rows, err := db.c.Query(commentsQuery, photoId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	photo.Comments = []Comment{} // Initialize the slice to store comments
+
+	// Iterate over the results and populate the comments slice
+	for rows.Next() {
+		var comment Comment
+		if err := rows.Scan(&comment.ID, &comment.UserID, &comment.PhotoID, &comment.Content, &comment.Timestamp); err != nil {
+			return nil, err
+		}
+		photo.Comments = append(photo.Comments, comment)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &photo, nil
+}

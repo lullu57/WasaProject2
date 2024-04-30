@@ -519,10 +519,6 @@ components:
           maxLength: 20
           pattern: '^[a-zA-Z0-9_]{10,20}$'
           description: The identifier of the user who uploaded the photo.
-        url:
-          type: string
-          format: uri
-          description: The URL of the photo.
         uploadTime:
           type: string
           format: date-time

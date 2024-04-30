@@ -7,11 +7,30 @@ import (
 
 	"encoding/json"
 
+	"encoding/base64"
+
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/database"
 	"github.com/gofrs/uuid"
 	"github.com/julienschmidt/httprouter"
 )
+
+type Comment struct {
+	ID        string    `json:"commentId" db:"comment_id"` // Unique identifier
+	UserID    string    `json:"userId" db:"user_id"`       // ID of the user who commented
+	PhotoID   string    `json:"photoId" db:"photo_id"`     // ID of the photo being commented on
+	Content   string    `json:"content" db:"content"`      // The comment itself
+	Timestamp time.Time `json:"timestamp" db:"timestamp"`  // Timestamp of when the comment was made
+}
+type PhotoDetail struct {
+	PhotoID    string    `json:"photoId"`
+	UserID     string    `json:"userId"`
+	Username   string    `json:"username"`
+	ImageData  []byte    `json:"imageData"`
+	Timestamp  time.Time `json:"timestamp"`
+	LikesCount int       `json:"likesCount"`
+	Comments   []Comment `json:"comments"`
+}
 
 func handleUploadPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Extract username from context
@@ -126,4 +145,47 @@ func handleDeletePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	ctx.Logger.Infof("Photo %s deleted by %s", photoID, ctx.User.Username)
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Photo deleted successfully"))
+}
+
+func handleGetPhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	photoID := ps.ByName("photoId")
+	if photoID == "" {
+		http.Error(w, "Invalid photo ID", http.StatusBadRequest)
+		return
+	}
+
+	photo, err := ctx.Database.GetPhoto(photoID)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	// Convert image data to base64 for JSON compatibility.
+	imageData := base64.StdEncoding.EncodeToString(photo.ImageData)
+	if err != nil {
+		http.Error(w, "Error encoding image data", http.StatusInternalServerError)
+		return
+	}
+
+	// Construct the full response including comments
+	response := struct {
+		PhotoID    string             `json:"photoId"`
+		UserID     string             `json:"userId"`
+		Username   string             `json:"username"`
+		Timestamp  string             `json:"timestamp"`
+		ImageData  string             `json:"imageData"`
+		LikesCount int                `json:"likesCount"`
+		Comments   []database.Comment `json:"comments"` // Using fully qualified type name
+	}{
+		PhotoID:    photo.PhotoID,
+		UserID:     photo.UserID,
+		Username:   photo.Username,
+		Timestamp:  photo.Timestamp.Format(time.RFC3339),
+		ImageData:  imageData,
+		LikesCount: photo.LikesCount,
+		Comments:   photo.Comments,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }

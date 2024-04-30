@@ -83,6 +83,15 @@ type Photo struct {
 	Comments  []Comment `json:"comments"`                  // Note: This requires a relational mapping and isn't directly mapped to a single column
 }
 
+type PhotoDetail struct {
+	PhotoID    string    `json:"photoId"`
+	UserID     string    `json:"userId"`
+	Username   string    `json:"username"`
+	ImageData  []byte    `json:"imageData"`
+	Timestamp  time.Time `json:"timestamp"`
+	LikesCount int       `json:"likesCount"`
+	Comments   []Comment `json:"comments"`
+}
 type Ban struct {
 	ID         string    `json:"banId" db:"ban_id"`           // Unique identifier
 	BannedBy   string    `json:"bannedBy" db:"banned_by"`     // ID of the user who banned the other user
@@ -118,8 +127,8 @@ type AppDatabase interface {
 	GetCommentsByPhotoId(photoId string) ([]Comment, error)
 	GetFollowersByUsername(username string) ([]string, error)
 	GetUserProfileByID(userID string) (*User, error)
+	GetPhoto(photoId string) (*PhotoDetail, error)
 }
-
 type appdbimpl struct {
 	c *sql.DB
 }

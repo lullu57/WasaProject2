@@ -20,6 +20,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/photos/comment/:photoIds", rt.wrap(handleGetComments))
 	rt.router.GET("/stream", rt.wrap(handleGetMyStream))
 	rt.router.GET("/users/followers/:username", rt.wrap(handleGetFollowers))
+	rt.router.GET("/photos/:photoId", rt.wrap(handleGetPhoto))
 	rt.router.POST("/users", rt.wrap(HandleAddUser))
 	rt.router.POST("/photos/comments/:photoId", rt.wrap(handleCommentPhoto))
 	rt.router.POST("/photos/likes/:photoId", rt.wrap(HandleLikePhoto))

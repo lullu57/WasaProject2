@@ -40,12 +40,13 @@ export default {
   },
   methods: {
     async toggleLike() {
+      
       const config = {
         headers: {
-          Authorization: `${localStorage.getItem('token')}`  // Adjusted to use a proper token header if applicable
+          Authorization: `${localStorage.getItem('userId')}`  // Adjusted to use a proper token header if applicable
         }
       };
-
+      console.log(this.isLiked)
       if (!this.isLiked) {
         this.photo.likesCount++;
         await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);
@@ -62,7 +63,7 @@ export default {
       if (this.newComment.trim() !== '') {
         const config = {
           headers: {
-            Authorization: `${localStorage.getItem('token')}`
+            Authorization: `${localStorage.getItem('userId')}`
           }
         };
         const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);

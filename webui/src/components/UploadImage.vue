@@ -54,6 +54,8 @@
   button {
     margin-top: 10px;
     background-color: #86c457;
+    justify-content: center;
+    align-items: center;
   }
   
   </style>

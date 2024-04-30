@@ -40,6 +40,9 @@ export default {
   },
   methods: {
     async toggleLike() {
+      console.log(this.isLiked);
+      console.log(this.photo.likesCount);
+      console.log(this.photo.photoId);
       if (this.isLiked) {
         this.photo.likesCount++;
         await api.post(`/photos/${this.photo.photoId}/likes`);
@@ -57,7 +60,8 @@ export default {
     async postComment() {
       console.log(this.newComment);
       if (this.newComment.trim() !== '') {
-        const response = await api.post(`/photos/${this.photo.photoId}/comments/`, { content: this.newComment });
+        const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment });
+        console.log(response.data);
         this.photo.comments.push({
           username: "YourUsername", // Ideally from server or global state
           content: this.newComment,

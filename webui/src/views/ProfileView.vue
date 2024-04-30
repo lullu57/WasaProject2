@@ -43,7 +43,7 @@ console.log('userId', userId);
 const fetchUserProfile = async () => {
   try {
     console.log('userId', userId);
-    const response = await api.get(`/users/${userId}/id`);
+    const response = await api.get(`/users/id/${userId}`);
     console.log('response', response);
     userProfile.value = response.data;
     if (userProfile.value && userProfile.value.photos) {
@@ -56,7 +56,7 @@ const fetchUserProfile = async () => {
     }
   } catch (error) {
     console.error("Error fetching user profile:", error);
-  } 
+  }
 };
 
 const fetchPhotoDetails = async (photoIds) => {

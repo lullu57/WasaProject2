@@ -26,7 +26,7 @@
           console.log(response.data.token)
           localStorage.setItem("userId", response.data.token);
           axios.defaults.headers.common['Authorization'] = response.data;
-          this.$router.push('/'); // Redirect to home after successful login
+          this.$router.push('/stream'); // Redirect to home after successful login
           location.reload()
         } catch (err) {
           console.log(err);

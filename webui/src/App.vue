@@ -27,13 +27,13 @@ function logout() {
         <div class="position-sticky pt-3 sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <RouterLink to="/" class="nav-link">
+              <RouterLink to="/stream" class="nav-link">
                 <svg class="feather"><use xlink:href="/feather-sprite.svg#home"/></svg>
                 Home
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isAuthenticated">
-              <RouterLink :to="'/user/' + userId" class="nav-link">
+              <RouterLink :to="'/profile/' + userId" class="nav-link">
                 <svg class="feather"><use xlink:href="/feather-sprite.svg#user"/></svg>
                 My Profile
               </RouterLink>

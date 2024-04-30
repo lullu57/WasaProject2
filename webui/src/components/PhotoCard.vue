@@ -10,8 +10,8 @@
       </div>
       <div v-if="showComments" class="comments-section">
         <div class="comment-form">
-          <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
-          <button @click="postComment">Post Comment</button>
+        <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
+        <button @click="postComment" class="post-comment">Post</button> 
         </div>
         <div class="comment" v-for="comment in photo.comments" :key="comment.commentId">
           <strong>{{ comment.username }}</strong>: {{ comment.content }}
@@ -114,12 +114,11 @@ export default {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  background-color: #fff; /* Adds a clean background color */
 }
 
 .photo-image {
-  max-width: 90%; /* reduces the maximum width to fit better */
-  max-height: 300px; /* reduces the maximum height */
+  max-width: 100%; /* ensures the image is not wider than the card */
+  max-height: 400px; /* sets a maximum height for the image */
   object-fit: contain; /* ensures the image fits nicely within the constraints */
   border-radius: 4px;
 }
@@ -130,14 +129,8 @@ export default {
   padding-top: 10px;
 }
 
-.photo-actions {
-  display: flex;
-  justify-content: space-around; /* changes from space-between to space-around for better distribution */
-  padding: 5px 0; /* adds padding around buttons */
-}
-
-button {
-  background-color: #007BFF; /* bootstrap primary color for consistency */
+.photo-actions button {
+  background-color: #ff5e8a; /* a light reddish-pink color for like button */
   color: white;
   border: none;
   border-radius: 4px;
@@ -146,25 +139,34 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3; /* darker shade on hover */
+.photo-actions button:hover {
+  background-color: #ff3860; /* a deeper shade on hover */
 }
 
 .comments-section {
   margin-top: 10px;
-  width: 100%;
+  width: 100%; /* ensures the comments section uses the full width of the card */
 }
 
 .comment-form {
   display: flex;
+  justify-content: space-between;
+  width: 100%; /* ensures the form uses the full width of the card */
   margin-top: 5px;
 }
 
 .comment-input {
   flex-grow: 1;
+  margin-right: 10px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 5px;
+}
+
+button.post-comment {
+  background-color: #007bff; /* primary button color */
+  padding: 5px 8px; /* smaller padding */
+  font-size: 0.8rem; /* smaller font size */
 }
 
 .comment {
@@ -174,3 +176,4 @@ button:hover {
   margin-top: 2px;
 }
 </style>
+

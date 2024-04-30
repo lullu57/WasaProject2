@@ -110,7 +110,7 @@ export default {
   border: 2px solid #ccc; /* increased border thickness for better definition */
   border-radius: 4px;
   padding: 10px; /* increased padding for better spacing */
-  margin-bottom: 20px; /* more vertical space between cards */
+  margin-bottom: 10px; /* more vertical space between cards */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,7 +139,7 @@ export default {
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px 16px; /* larger buttons for easier interaction */
+  padding: 5px 10px; /* larger buttons for easier interaction */
   cursor: pointer;
   transition: background-color 0.3s;
 }

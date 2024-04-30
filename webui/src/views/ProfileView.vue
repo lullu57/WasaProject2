@@ -113,7 +113,9 @@ onMounted(fetchUserProfile);
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust minmax for desired card width */
+  gap: 20px; /* Adjust gap for spacing between cards */
+  justify-content: center; /* Center cards in the gallery if they don't fill all columns */
+  align-items: start; /* Align items at the start of the grid line */
 }
 </style>

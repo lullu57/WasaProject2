@@ -23,6 +23,7 @@
         try {
           const response = await api.post('/session', { name: this.username });
           console.log(response.data)
+          console.log(response.data.token)
           localStorage.setItem("userId", response.data);
           axios.defaults.headers.common['Authorization'] = response.data;
           this.$router.push('/'); // Redirect to home after successful login

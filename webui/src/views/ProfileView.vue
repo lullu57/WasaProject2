@@ -30,7 +30,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import api from "@/services/axios";
-import PhotoCard from './components/PhotoCard.vue';
+import PhotoCard from '@/components/PhotoCard.vue';
 
 const route = useRoute();
 const userId = route.params.profileId;

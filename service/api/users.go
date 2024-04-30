@@ -108,12 +108,13 @@ func doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx r
 	// Check if user exists
 	user, err := ctx.Database.GetUserByUsername(req.Name)
 	if err != nil {
+		ctx.Logger.Error("Error retrieving user: ", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	// Handle non-existing user by creating a new one
 	if user == nil {
+		// User does not exist, create new one
 		user = &database.User{Username: req.Name}
 		err = ctx.Database.AddUser(user) // Directly call AddUser now
 		if err != nil {
@@ -121,6 +122,7 @@ func doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx r
 				http.Error(w, "Username already exists", http.StatusConflict)
 				return
 			}
+			ctx.Logger.Error("Failed to create user: ", err)
 			http.Error(w, "Failed to create user", http.StatusInternalServerError)
 			return
 		}
@@ -137,7 +139,10 @@ func doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx r
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		ctx.Logger.Error("Error encoding response: ", err)
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+	}
 }
 
 func HandleFollowUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {

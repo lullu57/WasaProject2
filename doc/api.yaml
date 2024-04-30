@@ -420,7 +420,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /photos/likes/{photoId}:
+  /photos/{photoId}/likes:
     parameters:
       - name: photoId
         in: path

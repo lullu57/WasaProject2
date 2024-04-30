@@ -47,14 +47,12 @@
   <style scoped>
   .upload-container {
     margin-top: 20px;
-    display: flex;
     justify-content: center;
     align-items: center;
   }
 
   button {
     margin-top: 10px;
-    padding: 10px 20px;
     background-color: #86c457;
   }
   

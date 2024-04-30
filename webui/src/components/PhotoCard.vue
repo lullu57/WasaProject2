@@ -42,19 +42,22 @@ export default {
     async toggleLike() {
       if (this.isLiked) {
         this.photo.likesCount++;
-        await api.post(`/photos/likes/${this.photo.photoId}`);
+        await api.post(`/photos/${this.photo.photoId}/likes`);
+        this.isLiked = !this.isLiked;
       } else {
         this.photo.likesCount--;
-        await api.delete(`/photos/likes/${this.photo.photoId}`);
+        await api.delete(`/photos/${this.photo.photoId}/likes`);
+        this.isLiked = !this.isLiked;
       }
-      this.isLiked = !this.isLiked;
+      
     },
     toggleComments() {
       this.showComments = !this.showComments;
     },
     async postComment() {
+      console.log(this.newComment);
       if (this.newComment.trim() !== '') {
-        const response = await api.post(`/photos/comments/${this.photo.photoId}`, { content: this.newComment });
+        const response = await api.post(`/photos/${this.photo.photoId}/comments/`, { content: this.newComment });
         this.photo.comments.push({
           username: "YourUsername", // Ideally from server or global state
           content: this.newComment,

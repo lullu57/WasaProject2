@@ -109,22 +109,23 @@ export default {
 .photo-card {
   border: 2px solid #ccc; /* increased border thickness for better definition */
   border-radius: 4px;
-  padding: 15px; /* increased padding for better spacing */
+  padding: 10px; /* increased padding for better spacing */
   margin-bottom: 20px; /* more vertical space between cards */
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* slightly heavier shadow for depth */
   width: 100%; /* ensures it's responsive to container size */
-  max-width: 800px; /* suitable max-width for content balancing */
+  max-width: 1200px; /* suitable max-width for content balancing */
+  height: auto; /* allows for variable height based on content */
 }
 
 .photo-image {
   width: 100%; /* ensures the image is responsive */
   height: auto; /* maintains aspect ratio */
-  max-height: 600px; /* increased maximum height for better display */
+  max-height: 1000px; /* increased maximum height for better display */
   object-fit: contain; /* ensures the image fits without distortion */
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .photo-info {
@@ -155,8 +156,9 @@ export default {
 .comment-form {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* full width for better layout control */
+  width: 60%; /* full width for better layout control */
   margin-top: 10px; /* added space above the comment form */
+  margin-bottom: 5px;
 }
 
 .comment-input {

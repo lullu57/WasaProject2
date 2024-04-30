@@ -43,7 +43,7 @@ console.log('userId', userId);
 const fetchUserProfile = async () => {
   try {
     console.log('userId', userId);
-    const response = await api.get(`/users/id/${userId}`);
+    const response = await api.get(`/users/${userId}/id`);
     console.log('response', response);
     userProfile.value = response.data;
     if (userProfile.value && userProfile.value.photos) {

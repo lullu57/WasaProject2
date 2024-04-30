@@ -14,7 +14,7 @@ func (rt *_router) Handler() http.Handler {
 	rt.router.GET("/liveness", rt.liveness)
 	rt.router.GET("/bans", rt.wrap(handleGetBannedUsers))
 	rt.router.GET("/users/username/:username", rt.wrap(HandleGetUserProfile))
-	rt.router.GET("/users/id/:userId", rt.wrap(HandleGetUserProfileID))
+	rt.router.GET("/users/:userId/id", rt.wrap(HandleGetUserProfileID))
 	rt.router.GET("/photos", rt.wrap(handleGetPhotos))
 	rt.router.GET("/users", rt.wrap(HandleGetAllUsers))
 	rt.router.GET("/photos/:photoId/comment/", rt.wrap(handleGetComments))

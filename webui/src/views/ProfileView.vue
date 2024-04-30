@@ -55,13 +55,16 @@ const fetchPhotoDetails = async (photoIds) => {
   detailedPhotos.value = await Promise.all(photoIds.map(async (id) => {
     try {
       const res = await api.get(`/photos/${id}`);
+      console.log(res.data);
       const photo = res.data;
       // Fetch usernames for each comment
+      console.log(photo.comments);
       photo.comments = await Promise.all(photo.comments.map(async (comment) => {
         const userResponse = await api.get(`/username/${comment.userID}`);
         comment.username = userResponse.data.username;
         return comment;
       }));
+      console.log(photo);
       return photo;
     } catch (error) {
       console.error("Error fetching photo details:", error);

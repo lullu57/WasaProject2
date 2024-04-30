@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
 
 const userId = ref(localStorage.getItem('userId'));
-
+console.log(userId)
 const isAuthenticated = computed(() => !!userId.value);
 
 function logout() {

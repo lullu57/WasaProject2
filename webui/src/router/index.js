@@ -7,7 +7,13 @@ const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
 	routes: [
 		{ path: '/', name: 'Login', component: LoginView },
-  		{ path: '/profile/:profileId', name: 'Profile', component: ProfileView, props: true, meta: { requiresAuth: true } }
+		{
+            path: '/profile/:profileId',
+            name: 'Profile',
+            component: ProfileView,
+            props: true, // Ensures that route params get passed as props to the component
+            meta: { requiresAuth: true }
+        }
 	]	
 })
 

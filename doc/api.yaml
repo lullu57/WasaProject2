@@ -506,6 +506,25 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" } 
+  /follows/{userId}: 
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/user'
+    get:
+      tags: [user]
+      summary: Get if the User Is Followed
+      description: Check whether a user is followed by the current user.
+      operationId: isUserFollowed
+      responses:
+        '200':
+          description: Follow retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: boolean
 components:
   responses:
     BadRequest:

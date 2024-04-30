@@ -130,6 +130,7 @@ type AppDatabase interface {
 	GetPhoto(photoId string) (*PhotoDetail, error)
 	GetUsername(userID string) (string, error)
 	IsLiked(photoID string, userID string) (bool, error)
+	IsUserFollowed(followerID, followedID string) (bool, error)
 }
 type appdbimpl struct {
 	c *sql.DB

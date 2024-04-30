@@ -229,3 +229,19 @@ func handleGetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
+
+func handleIsUserFollowed(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	userId := ps.ByName("userId")
+	followerId := ctx.User.ID
+
+	isFollowed, err := ctx.Database.IsUserFollowed(followerId, userId)
+	if err != nil {
+		ctx.Logger.Error("Failed to check if user is followed: ", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	ctx.Logger.Infof("User follow status checked")
+	response := map[string]bool{"isFollowed": isFollowed}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}

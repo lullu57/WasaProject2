@@ -25,7 +25,10 @@ import { ref, onMounted, computed } from 'vue';
 import api from "@/services/axios"; 
 
 const props = defineProps({
-  userId: String
+  userId: {
+    type: String,
+    required: true
+  }
 });
 
 const userProfile = ref(null);

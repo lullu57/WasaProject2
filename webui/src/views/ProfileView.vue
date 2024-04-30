@@ -1,6 +1,6 @@
 <template>
-  <div class="profile-view">
-    <div v-if="userProfile" class="info-container">
+  <div class="profile-view" v-if="userProfile">
+    <div class="info-container">
       <p>Username: {{ userProfile.username }}</p>
       <p>Followers: {{ userProfile.followers?.length || '0' }}</p>
       <p>Following: {{ userProfile.following?.length || '0' }}</p>
@@ -12,18 +12,19 @@
         {{ userProfile.isBanned ? 'Unban' : 'Ban' }}
       </button>
     </div>
-    <div v-else>
-      <p>No profile data available.</p>
-    </div>
     <div class="gallery">
       <PhotoCard 
         v-for="photo in userProfile.photos" 
-        :key="photo.id"
+        :key="photo.photoId"
         :photo="photo"
       />
     </div>
   </div>
+  <div v-else>
+    <p>Loading profile or no profile data available.</p>
+  </div>
 </template>
+
 
 
 
@@ -31,6 +32,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router'; // Import useRoute to access route params
 import api from "@/services/axios"; 
+import PhotoCard from '@/components/PhotoCard.vue'; 
 
 const route = useRoute(); // Use useRoute to access the route parameters
 
@@ -44,11 +46,16 @@ console.log(route.params);
 const fetchUserProfile = async () => {
   try {
     const response = await api.get(`/users/id/${userId}`);
-    userProfile.value = response.data;
+    if (response.data) {
+      userProfile.value = response.data;
+    } else {
+      console.error("No data returned for user profile");
+    }
   } catch (error) {
     console.error("Error fetching user profile:", error);
   }
 };
+
 
 const toggleFollow = async () => {
   const method = userProfile.value.isFollowing ? 'delete' : 'post';

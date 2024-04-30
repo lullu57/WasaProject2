@@ -16,7 +16,6 @@
         <p>No profile data available.</p>
       </div>
       <div class="gallery">
-        <photo-card v-for="photo in userProfile.photos" :key="photo.id" :photo="photo" />
       </div>
     </div>
 </template>
@@ -35,6 +34,8 @@ const isOwnProfile = computed(() => props.userId === localStorage.getItem('userI
 const fetchUserProfile = async () => {
   try {
     const response = await api.get(`/users/id/${props.userId}`);
+    console.log(response.data)
+    console.log(response)
     userProfile.value = response.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);

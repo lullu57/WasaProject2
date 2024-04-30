@@ -39,7 +39,7 @@ function logout() {
               </RouterLink>
             </li>
             <li class="nav-item" v-if="!isAuthenticated">
-              <RouterLink to="/login" class="nav-link">
+              <RouterLink to="/" class="nav-link">
                 <svg class="feather"><use xlink:href="/feather-sprite.svg#log-in"/></svg>
                 Login
               </RouterLink>

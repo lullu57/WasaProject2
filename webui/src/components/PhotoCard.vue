@@ -115,7 +115,8 @@ export default {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  size: 2000px;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .photo-image {

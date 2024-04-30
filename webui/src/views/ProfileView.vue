@@ -38,6 +38,7 @@ const detailedPhotos = ref([]);
 const localStorageUserId = localStorage.getItem('userId');
 const isOwnProfile = computed(() => userId === localStorageUserId);
 console.log('isOwnProfile', isOwnProfile.value);
+console.log('userId', userId);
 
 const fetchUserProfile = async () => {
   try {
@@ -67,6 +68,7 @@ const fetchPhotoDetails = async (photoIds) => {
         comment.username = userResponse.data.username;
         return comment;
       }));
+      console.log('photo', photo);
       return photo;
     } catch (error) {
       console.error("Error fetching photo details:", error);

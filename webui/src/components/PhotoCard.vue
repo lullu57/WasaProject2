@@ -12,10 +12,10 @@
         <div class="comment-form">
         <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
         <button @click="postComment" class="post-comment">Post</button> 
-        
+      </div>
         <div class="comment" v-for="comment in photo.comments" :key="comment.commentId">
           <strong>{{ comment.username }}</strong>: {{ comment.content }}
-          </div>
+          
         </div>
       </div>
     </div>

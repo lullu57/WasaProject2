@@ -33,11 +33,11 @@ function logout() {
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isAuthenticated">
-              <RouterLink :to="'/profile/' + userId" , params: {userId: userId},   class="nav-link">
-                <svg class="feather"><use xlink:href="/feather-sprite.svg#user"/></svg>
-                My Profile
-              </RouterLink>
-            </li>
+				<RouterLink :to="`/profile/${userId}`" class="nav-link">
+				<svg class="feather"><use xlink:href="/feather-sprite.svg#user"/></svg>
+				My Profile
+				</RouterLink>
+			</li>
             <li class="nav-item" v-if="!isAuthenticated">
               <RouterLink to="/" class="nav-link">
                 <svg class="feather"><use xlink:href="/feather-sprite.svg#log-in"/></svg>

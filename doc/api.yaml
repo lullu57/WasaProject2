@@ -525,6 +525,25 @@ paths:
             application/json:
               schema:
                 type: boolean
+  /bans/{userId}: 
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/user'
+    get:
+      tags: [user]
+      summary: Get if the User Is Banned
+      description: Check whether a user is banned.
+      operationId: isUserBanned
+      responses:
+        '200':
+          description: Ban retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: boolean
 components:
   responses:
     BadRequest:

@@ -311,7 +311,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
     
-  /photos/comments/{photoId}:
+  /photos/{photoId}/comments:
     parameters:
         - name: photoId
           in: path
@@ -362,7 +362,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /photos:
+  :
     post:
       tags: [photo]
       summary: Upload Photo
@@ -386,6 +386,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
+  /photos/{photoId}:
     get:
       tags: [photo]
       summary: Get Photo
@@ -420,7 +421,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
 
-  /photos/likes/{photoId}:
+  /photos/{photoId}/likes:
     parameters:
       - name: photoId
         in: path

@@ -123,7 +123,7 @@ export default {
 .photo-image {
   width: 100%; /* ensures the image is responsive */
   height: auto; /* maintains aspect ratio */
-  max-height: 600px; /* increased maximum height for better display */
+  max-height: 250px; /* increased maximum height for better display */
   object-fit: contain; /* ensures the image fits without distortion */
   border-radius: 2px;
 }

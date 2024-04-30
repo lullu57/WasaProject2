@@ -134,6 +134,12 @@ export default {
   padding-top: 10px;
 }
 
+.photo-actions {
+  display: flex;
+  justify-content: space-around; /* changes from space-between to space-around for better distribution */
+  padding: 5px 0; /* adds padding around buttons */
+}
+
 .photo-actions button {
   background-color: #ff5e8a; /* softer pink for like button */
   color: white;
@@ -162,10 +168,9 @@ export default {
 }
 
 .comment-input {
-  flex-grow: 1; /* allows input to fill space */
   border: 1px solid #ccc; /* refined border styling */
   border-radius: 4px;
-  padding: 10px; /* increased padding for better text entry */
+  padding: 5px; /* increased padding for better text entry */
 }
 
 button.post-comment {
@@ -183,5 +188,3 @@ button.post-comment {
   margin-top: 4px; /* space between comments */
 }
 </style>
-
-

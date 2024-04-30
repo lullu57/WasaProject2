@@ -25,7 +25,7 @@
   
   
 <script>
-import api from '@/services/axios'; // Assuming axios is set up to handle API calls
+import api from '@/services/axios'; // Assuming axios is configured globally
 
 export default {
   props: {
@@ -40,30 +40,35 @@ export default {
   },
   methods: {
     async toggleLike() {
-      console.log(this.isLiked);
-      console.log(this.photo.likesCount);
-      console.log(this.photo.photoId);
-      if (this.isLiked) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('userId')}` // Assuming you use Bearer tokens
+        }
+      };
+      
+      if (!this.isLiked) {
         this.photo.likesCount++;
-        await api.post(`/photos/${this.photo.photoId}/likes`);
+        await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);
         this.isLiked = !this.isLiked;
       } else {
         this.photo.likesCount--;
-        await api.delete(`/photos/${this.photo.photoId}/likes`);
+        await api.delete(`/photos/${this.photo.photoId}/likes`, config);
         this.isLiked = !this.isLiked;
       }
-      
     },
     toggleComments() {
       this.showComments = !this.showComments;
     },
     async postComment() {
-      console.log(this.newComment);
       if (this.newComment.trim() !== '') {
-        const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment });
-        console.log(response.data);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('userId')}`
+          }
+        };
+        const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);
         this.photo.comments.push({
-          username: "YourUsername", // Ideally from server or global state
+          username: "YourUsername", // Use actual username from your auth state or response
           content: this.newComment,
           commentId: response.data.commentId
         });
@@ -71,11 +76,12 @@ export default {
       }
     },
     formatDate(value) {
-      return new Date(value).toLocaleString(); // Here's the method to replace the filter
+      return new Date(value).toLocaleString(); // Formatting the date
     }
   }
 }
 </script>
+
 
   
   <style scoped>

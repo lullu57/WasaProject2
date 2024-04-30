@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"encoding/json"
+
 	"git.sapienzaapps.it/fantasticcoffee/fantastic-coffee-decaffeinated/service/api/reqcontext"
 	"github.com/julienschmidt/httprouter"
 )
@@ -31,8 +33,22 @@ func HandleLikePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 
 // HandleUnlikePhoto processes the request to unlike a photo
 func HandleUnlikePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	photoID := ps.ByName("photoId") // Assuming you're using httprouter and path parameter named "photoId"
-	userID := ctx.User.ID           // Assuming `ctx` has a User object with ID field
+	// Use a map to hold the JSON payload for simplicity
+	var data map[string]string
+
+	// Decode the JSON body into the map
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	userID := ctx.User.ID
+	photoID, ok := data["photoId"]
+	if !ok {
+		http.Error(w, "Photo ID is required", http.StatusBadRequest)
+		return
+	}
 
 	// Log the action
 	ctx.Logger.Info("Unliking photo", "userID", userID, "photoID", photoID)

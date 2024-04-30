@@ -25,7 +25,7 @@ import { ref, onMounted, computed } from 'vue';
 import api from "@/services/axios"; 
 
 const props = defineProps({
-  username: String
+  userId: String
 });
 
 const userProfile = ref(null);
@@ -33,7 +33,7 @@ const isOwnProfile = computed(() => props.userId === localStorage.getItem('userI
 
 const fetchUserProfile = async () => {
   console.log(props.userId)
-  console.log(localStorage.getItem('userId'))
+  console.log(localStorage.getItem('userId'))  
   try {
     const response = await api.get(`/users/id/${props.userId}`);
     console.log(response.data)
@@ -45,7 +45,7 @@ const fetchUserProfile = async () => {
 };
 
 const toggleFollow = async () => {
-  const endpoint = `/users/follows/${props.username}`;
+  const endpoint = `/users/follows/${props.userId}`;
   try {
     await api({
       method: userProfile.value.isFollowing ? 'delete' : 'post',
@@ -58,7 +58,7 @@ const toggleFollow = async () => {
 };
 
 const toggleBan = async () => {
-  const endpoint = `/users/bans/${props.username}`;
+  const endpoint = `/users/bans/${props.userId}`;
   try {
     await api({
       method: userProfile.value.isBanned ? 'delete' : 'post',

@@ -146,44 +146,33 @@ func doLogin(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx r
 }
 
 func HandleFollowUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	followedUsername := ps.ByName("username") // Extracting username from URL parameter
+	userId := ps.ByName("userId") // Extracting username from URL parameter
 
 	followerID := ctx.User.ID
-	followedID, err := ctx.Database.GetUserIDByUsername(followedUsername)
-	if err != nil {
-		http.Error(w, "Failed to find user: "+followedUsername, http.StatusNotFound)
-		return
-	}
 
-	err = ctx.Database.FollowUser(followerID, followedID)
+	var err = ctx.Database.FollowUser(followerID, userId)
 	if err != nil {
 		ctx.Logger.Errorf("Error following user: %v", err)
 		http.Error(w, "Failed to follow user", http.StatusInternalServerError)
 		return
 	}
-	ctx.Logger.Infof("User %s followed %s", ctx.User.Username, followedUsername)
+	ctx.Logger.Infof("User %s followed %s", ctx.User.Username, userId)
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "User Followed successfully"})
 }
 
 func HandleUnfollowUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	followedUsername := ps.ByName("username") // Extracting username from URL parameter
+	userId := ps.ByName("userId") // Extracting username from URL parameter
 
 	followerID := ctx.User.ID
-	followedID, err := ctx.Database.GetUserIDByUsername(followedUsername)
-	if err != nil {
-		http.Error(w, "Failed to find user: "+followedUsername, http.StatusNotFound)
-		return
-	}
-
-	err = ctx.Database.UnfollowUser(followerID, followedID)
+	var err = ctx.Database.UnfollowUser(followerID, userId)
 	if err != nil {
 		ctx.Logger.Errorf("Error unfollowing user: %v", err)
 		http.Error(w, "Failed to unfollow user", http.StatusInternalServerError)
 		return
 	}
-	ctx.Logger.Infof("User %s unfollowed %s", ctx.User.Username, followedUsername)
+	ctx.Logger.Infof("User %s unfollowed %s", ctx.User.Username, userId)
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "User Unfollowed successfully"})

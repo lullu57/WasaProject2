@@ -9,21 +9,10 @@ import (
 )
 
 func handleBanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	username := ps.ByName("username")
-	if username == "" {
-		http.Error(w, "Invalid username", http.StatusBadRequest)
-		return
-	}
-
-	// Assuming you have a method to fetch user ID by username
-	bannedUser, err := ctx.Database.GetUserByUsername(username)
-	if err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
-		return
-	}
+	userId := ps.ByName("userId")
 
 	bannedBy := ctx.User.ID
-	err = ctx.Database.BanUser(bannedBy, bannedUser.ID)
+	var err = ctx.Database.BanUser(bannedBy, userId)
 	if err != nil {
 		if err.Error() == "user is already banned" {
 			http.Error(w, "User is already banned", http.StatusConflict)
@@ -32,36 +21,31 @@ func handleBanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params,
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	ctx.Logger.Infof("User %s banned by %s", bannedUser.Username, ctx.User.Username)
+	ctx.Logger.Infof("User %s banned by %s", userId, ctx.User.Username)
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("User successfully banned"))
 }
 
 // Handler for unbanning a user
 func handleUnbanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	bannedUsername := ps.ByName("username")
+	userId := ps.ByName("userId")
 
-	if bannedUsername == "" {
+	if userId == "" {
 		ctx.Logger.Infof("Invalid parameters")
 		http.Error(w, "Invalid parameters", http.StatusBadRequest)
 		return
 	}
 
 	// Fetch user IDs by username
-	bannedUser, err := ctx.Database.GetUserByUsername(bannedUsername)
-	if err != nil {
-		http.Error(w, "Banned user not found", http.StatusNotFound)
-		return
-	}
 	bannerUser := ctx.User.ID
 
-	err = ctx.Database.UnbanUser(bannerUser, bannedUser.ID)
+	var err = ctx.Database.UnbanUser(bannerUser, userId)
 	if err != nil {
 		ctx.Logger.Infof("Internal server error " + err.Error())
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	ctx.Logger.Infof("User %s unbanned by %s", bannedUser.Username, ctx.User.Username)
+	ctx.Logger.Infof("User %s unbanned by %s", userId, ctx.User.Username)
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("User successfully unbanned"))
 }

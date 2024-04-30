@@ -116,7 +116,7 @@ export default {
   align-items: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* slightly heavier shadow for depth */
   width: 100%; /* ensures it's responsive to container size */
-  max-width: 800px; /* suitable max-width for content balancing */
+  max-width: 450px; /* suitable max-width for content balancing */
   height: auto; /* allows for variable height based on content */
 }
 

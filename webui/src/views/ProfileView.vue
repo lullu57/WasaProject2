@@ -55,7 +55,14 @@ const fetchPhotoDetails = async (photoIds) => {
   detailedPhotos.value = await Promise.all(photoIds.map(async (id) => {
     try {
       const res = await api.get(`/photos/${id}`);
-      return res.data;
+      const photo = res.data;
+      // Fetch usernames for each comment
+      photo.comments = await Promise.all(photo.comments.map(async (comment) => {
+        const userResponse = await api.get(`/username/${comment.userID}`);
+        comment.username = userResponse.data.username;
+        return comment;
+      }));
+      return photo;
     } catch (error) {
       console.error("Error fetching photo details:", error);
       return null; // Handle errors or missing data gracefully
@@ -66,14 +73,22 @@ const fetchPhotoDetails = async (photoIds) => {
 const toggleFollow = async () => {
   const method = userProfile.value.isFollowing ? 'delete' : 'post';
   const endpoint = `/users/follows/${userId}`;
-  await api[method](endpoint);
+  await api[method](endpoint, {} , {
+    headers: {
+      Authorization: localStorageUserId
+    }
+  });
   userProfile.value.isFollowing = !userProfile.value.isFollowing;
 };
 
 const toggleBan = async () => {
   const method = userProfile.value.isBanned ? 'delete' : 'post';
   const endpoint = `/users/bans/${userId}`;
-  await api[method](endpoint);
+  await api[method](endpoint, {} , {
+    headers: {
+      Authorization: localStorageUserId
+    }
+  });
   userProfile.value.isBanned = !userProfile.value.isBanned;
 };
 

@@ -34,28 +34,45 @@ export default {
   data() {
     return {
       showComments: true,
-      isLiked: false,
+      isLiked: false, // Will be updated based on API response
       newComment: ''
     };
   },
+  mounted() {
+    this.checkIfLiked(); // Check if the photo is liked on component mount
+  },
   methods: {
-    async toggleLike() {
-      
+    async checkIfLiked() {
       const config = {
         headers: {
-          Authorization: `${localStorage.getItem('userId')}`  // Adjusted to use a proper token header if applicable
+          Authorization: `${localStorage.getItem('userId')}`
         }
       };
-      console.log(this.isLiked)
-      console.log(this)
-      if (!this.isLiked) {
-        this.photo.likesCount++;
-        await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);
-      } else {
-        this.photo.likesCount--;
-        await api.delete(`/photos/${this.photo.photoId}/likes`, config);
+      try {
+        const response = await api.get(`/likes/${this.photo.photoId}`, config);
+        this.isLiked = response.data.liked;
+      } catch (error) {
+        console.error('Failed to check like status', error);
       }
-      this.isLiked = !this.isLiked;
+    },
+    async toggleLike() {
+      const config = {
+        headers: {
+          Authorization: `${localStorage.getItem('userId')}`
+        }
+      };
+      try {
+        if (!this.isLiked) {
+          await api.post(`/photos/${this.photo.photoId}/likes`, {}, config);
+          this.photo.likesCount++;
+        } else {
+          await api.delete(`/photos/${this.photo.photoId}/likes`, config);
+          this.photo.likesCount--;
+        }
+        this.isLiked = !this.isLiked;
+      } catch (error) {
+        console.error('Failed to toggle like', error);
+      }
     },
     toggleComments() {
       this.showComments = !this.showComments;
@@ -68,15 +85,9 @@ export default {
           }
         };
         const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);
-        let username = 'You';  // Default username
-        try {
-          const userRes = await api.get(`/username/${localStorage.getItem('userId')}`, config);
-          username = userRes.data.username;  // Fetch the username dynamically
-        } catch (error) {
-          console.error('Failed to fetch username', error);
-        }
+        let username = 'You'; // Ideally fetch from server or use global state
         this.photo.comments.push({
-          username: username,
+          username,
           content: this.newComment,
           commentId: response.data.commentId
         });
@@ -89,6 +100,7 @@ export default {
   }
 }
 </script>
+
 
 
 

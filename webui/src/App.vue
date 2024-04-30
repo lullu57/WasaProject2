@@ -9,7 +9,7 @@ const isAuthenticated = computed(() => !!userId.value);
 function logout() {
   localStorage.removeItem('userId');
   userId.value = null;
-  window.location.href = '/login'; // Adjust according to your routing settings
+  window.location.href = '/';
 }
 </script>
 

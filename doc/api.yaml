@@ -461,7 +461,51 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
+  /username/{userId}/:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/user'
+    get:
+      tags: [user]
+      summary: Get User usernae
+      description: Get the username of a user.
+      operationId: getUsername
+      responses:
+        '200':
+          description: Username retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+  /likes/{photoId}/: 
+    parameters:
+      - name: photoId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/photoId'
+    get:
+      tags: [like]
+      summary: Get Like
+      description: Get whether a user liked a photo.
+      operationId: isLiked
+      responses:
+        '200':
+          description: Like retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" } 
 components:
   responses:
     BadRequest:

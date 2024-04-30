@@ -65,3 +65,24 @@ func HandleUnlikePhoto(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintln(w, "Photo unliked successfully")
 }
+
+func HandleIsLiked(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	photoID := ps.ByName("photoId") // Assuming you're using httprouter and path parameter named "photoId"
+	userID := ctx.User.ID           // Assuming `ctx` has a User object with ID field
+
+	// Log the action
+	ctx.Logger.Info("Checking if photo is liked", "userID", userID, "photoID", photoID)
+
+	// Call IsLiked method of the database object
+	liked, err := ctx.Database.IsLiked(userID, photoID)
+	if err != nil {
+		ctx.Logger.Error("Error checking if photo is liked", "error", err)
+		http.Error(w, "Failed to check if photo is liked", http.StatusInternalServerError)
+		return
+	}
+
+	// Respond with the result
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]bool{"liked": liked})
+}

@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      showComments: false,
+      showComments: true,
       isLiked: false,
       newComment: ''
     };

@@ -2,9 +2,9 @@
   <div class="profile-view">
     <div v-if="userProfile" class="info-container">
       <p>Username: {{ userProfile.username }}</p>
-      <p>Followers: {{ userProfile.followers.length }}</p>
-      <p>Following: {{ userProfile.following.length }}</p>
-      <p>Posts: {{ userProfile.photos.length }}</p>
+      <p>Followers: {{ userProfile.followers?.length || '0' }}</p>
+      <p>Following: {{ userProfile.following?.length || '0' }}</p>
+      <p>Posts: {{ userProfile.photos?.length || '0' }}</p>
       <button v-if="!isOwnProfile" @click="toggleFollow">
         {{ userProfile.isFollowing ? 'Unfollow' : 'Follow' }}
       </button>
@@ -20,6 +20,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script setup>

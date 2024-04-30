@@ -302,3 +302,12 @@ func (db *appdbimpl) GetUsername(userID string) (string, error) {
 	}
 	return username, nil
 }
+
+func (db *appdbimpl) IsUserFollowed(followerID, followedID string) (bool, error) {
+	var exists bool
+	err := db.c.QueryRow("SELECT EXISTS(SELECT 1 FROM followers WHERE user_id = ? AND follower_id = ?)", followedID, followerID).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("error checking if user is followed: %w", err)
+	}
+	return exists, nil
+}

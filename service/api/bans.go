@@ -70,3 +70,23 @@ func handleGetBannedUsers(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 }
+
+func handleIsUserBanned(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
+	var banner = ctx.User.ID
+	userId := ps.ByName("userId")
+	if userId == "" {
+		http.Error(w, "Invalid userId parameter", http.StatusBadRequest)
+		return
+	}
+
+	banned, err := ctx.Database.BanExists(banner, userId)
+	if err != nil {
+		ctx.Logger.Error("Failed to check if user is banned: ", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]bool{"banned": banned}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}

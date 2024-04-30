@@ -104,62 +104,73 @@ export default {
 
 
 
-  
-  <style scoped>
-  .photo-card {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .photo-image {
-    max-width: 100%; /* ensures the image is not wider than the card */
-    max-height: 400px; /* sets a maximum height for the image */
-    width: auto; /* maintains the aspect ratio */
-    height: auto; /* maintains the aspect ratio */
-    object-fit: contain; /* ensures the image fits nicely within the constraints, without stretching */
-    border-radius: 4px;
-  }
-  
-  .photo-info {
-    width: 100%;
-    text-align: center;
-    padding-top: 10px;
-  }
-  
-  .photo-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-  
-  .comments-section {
-    margin-top: 10px;
-    width: 100%; /* ensures the comments section uses the full width of the card */
-  }
-  
-  .comment-form {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; /* ensures the form uses the full width of the card */
-  }
-  
-  .comment-input {
-    flex-grow: 1;
-    margin-right: 10px;
-  }
-  
-  .comment {
-    background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 3px;
-    margin-top: 2px;
-  }
-  </style>
-  
-  
+<style scoped>
+.photo-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #fff; /* Adds a clean background color */
+}
+
+.photo-image {
+  max-width: 90%; /* reduces the maximum width to fit better */
+  max-height: 300px; /* reduces the maximum height */
+  object-fit: contain; /* ensures the image fits nicely within the constraints */
+  border-radius: 4px;
+}
+
+.photo-info {
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.photo-actions {
+  display: flex;
+  justify-content: space-around; /* changes from space-between to space-around for better distribution */
+  padding: 5px 0; /* adds padding around buttons */
+}
+
+button {
+  background-color: #007BFF; /* bootstrap primary color for consistency */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3; /* darker shade on hover */
+}
+
+.comments-section {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.comment-form {
+  display: flex;
+  margin-top: 5px;
+}
+
+.comment-input {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.comment {
+  background-color: #f0f0f0;
+  padding: 5px;
+  border-radius: 3px;
+  margin-top: 2px;
+}
+</style>

@@ -10,6 +10,30 @@ body {
 /*
  * Sidebar
  */
+.navbar {
+	background-color: #007bff; /* Example of a brighter color */
+	padding: 10px 15px; /* Increased padding */
+  }
+  
+  .navbar-brand {
+	font-size: 1.25rem; /* Larger font size */
+  }
+  
+  .sidebar {
+	background-color: #67b0f9; /* Light background color */
+	width: 200px; /* Increased width */
+  }
+  
+  .nav-link {
+	display: flex;
+	align-items: center;
+	gap: 10px; /* Adds space between icon and text */
+	transition: background-color 0.3s ease-in-out; /* Smooth transition for hover */
+  }
+  
+  .nav-link:hover {
+	background-color: #b6d5f3; /* Light background on hover */
+  }
 
 .sidebar {
 	position: fixed;

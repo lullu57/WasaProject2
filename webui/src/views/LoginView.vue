@@ -25,6 +25,7 @@ export default {
         localStorage.setItem("userId", response.data.token);
         axios.defaults.headers.common['Authorization'] = response.data;
         window.location.href = '/stream';
+        location.reload();
       } catch (err) {
         this.error = 'Failed to login. Please try again.';
         console.error(err);

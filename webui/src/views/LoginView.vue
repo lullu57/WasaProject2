@@ -25,7 +25,6 @@ export default {
         localStorage.setItem("userId", response.data.token);
         axios.defaults.headers.common['Authorization'] = response.data;
         this.$router.push('/stream'); // Redirect to stream after successful login
-        location.reload(); // Optionally reload the page to reset state
       } catch (err) {
         this.error = 'Failed to login. Please try again.';
         console.error(err);

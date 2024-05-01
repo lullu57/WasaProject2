@@ -42,7 +42,7 @@ func HandleSetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	// Get the new username from URL parameters if needed
 	ctx.Logger.Info("Setting new username for user")
 	newUsername := ps.ByName("username")
-
+	ctx.Logger.Info("New username: ", newUsername)
 	if newUsername == "" {
 		http.Error(w, "New username must be provided", http.StatusBadRequest)
 		return

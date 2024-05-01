@@ -40,15 +40,13 @@ func HandleAddUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params,
 
 func HandleSetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Get the new username from URL parameters if needed
-	ctx.Logger.Info("Setting new username for user")
 	newUsername := ps.ByName("username")
-	ctx.Logger.Info("New username: ", newUsername)
 	if newUsername == "" {
 		http.Error(w, "New username must be provided", http.StatusBadRequest)
 		return
 	}
 	ctx.Logger.Info("CurrentID: ", ctx.User.ID)
-	// Assuming we can obtain the current username from the context of the logged user
+
 	currentUserID := ctx.User.ID // Ensure that ctx.User is populated correctly in the middleware
 
 	ctx.Logger.Info("Setting new username for user ID: ", currentUserID)

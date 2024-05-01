@@ -28,7 +28,7 @@ function logout() {
           <ul class="nav flex-column">
             <li class="nav-item">
               <RouterLink to="/stream" class="nav-link">
-                <svg class="feather"><use xlink:href="/feather-sprite.svg#home"/></svg>
+                <svg class="feather"></svg>
                 Home
               </RouterLink>
             </li>
@@ -40,19 +40,19 @@ function logout() {
 			</li>
             <li class="nav-item" v-if="!isAuthenticated">
               <RouterLink to="/" class="nav-link">
-                <svg class="feather"><use xlink:href="/feather-sprite.svg#log-in"/></svg>
+                <svg class="feather"></svg>
                 Login
               </RouterLink>
             </li>
             <li class="nav-item" v-if="isAuthenticated">
               <button @click="logout" class="btn nav-link">
-                <svg class="feather"><use xlink:href="/feather-sprite.svg#log-out"/></svg>
+                <svg class="feather"></svg>
                 Logout
               </button>
             </li>
             <li class="nav-item">
               <RouterLink to="/discover" class="nav-link" v-if="isAuthenticated">
-                <svg class="feather"><use xlink:href="/feather-sprite.svg#users"/></svg>
+                <svg class="feather"></svg>
                 Discover Users
               </RouterLink>
             </li>

@@ -235,7 +235,7 @@ func (db *appdbimpl) FollowUser(followerID, followedID string) error {
 }
 
 func (db *appdbimpl) UnfollowUser(followerID, followedID string) error {
-	_, err := db.c.Exec(`DELETE FROM followers WHERE user_id = ? AND follower_id = ?`, followerID, followedID)
+	_, err := db.c.Exec(`DELETE FROM followers WHERE user_id = ? AND follower_id = ?`, followedID, followerID)
 	if err != nil {
 		return fmt.Errorf("error unfollowing user: %w", err)
 	}

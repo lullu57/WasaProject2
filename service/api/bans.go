@@ -29,7 +29,7 @@ func handleBanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params,
 // Handler for unbanning a user
 func handleUnbanUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	userId := ps.ByName("userId")
-
+	ctx.Logger.Infof("Unbanning user %s", userId)
 	if userId == "" {
 		ctx.Logger.Infof("Invalid parameters")
 		http.Error(w, "Invalid parameters", http.StatusBadRequest)

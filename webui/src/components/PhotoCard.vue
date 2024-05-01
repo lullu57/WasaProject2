@@ -10,21 +10,18 @@
       </div>
       <div v-if="showComments" class="comments-section">
         <div class="comment-form">
-        <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
-        <button @click="postComment" class="post-comment">Post</button> 
-      </div>
+          <input v-model="newComment" placeholder="Write a comment..." class="comment-input"/>
+          <button @click="postComment" class="post-comment">Post</button> 
+        </div>
         <div class="comment" v-for="comment in photo.comments" :key="comment.commentId">
           <strong>{{ comment.username }}</strong>: {{ comment.content }}
-          
+          <button v-if="comment.userId === localStorage.getItem('userId')" @click="deleteComment(comment.commentId)" class="delete-comment">Delete</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-  
-  
-  
 <script>
 import api from '@/services/axios';
 
@@ -35,12 +32,12 @@ export default {
   data() {
     return {
       showComments: true,
-      isLiked: false, // Will be updated based on API response
+      isLiked: false,
       newComment: ''
     };
   },
   mounted() {
-    this.checkIfLiked(); // Check if the photo is liked on component mount
+    this.checkIfLiked();
   },
   methods: {
     async checkIfLiked() {
@@ -75,9 +72,6 @@ export default {
         console.error('Failed to toggle like', error);
       }
     },
-    toggleComments() {
-      this.showComments = !this.showComments;
-    },
     async postComment() {
       if (this.newComment.trim() !== '') {
         const config = {
@@ -90,9 +84,22 @@ export default {
         this.photo.comments.push({
           username,
           content: this.newComment,
-          commentId: response.data.commentId
+          commentId: response.data.commentId,
+          userId: localStorage.getItem('userId') // Assuming you're storing userId in localStorage
         });
         this.newComment = '';
+      }
+    },
+    async deleteComment(commentId) {
+      try {
+        await api.delete(`/comments/${commentId}`, {
+          headers: {
+            Authorization: `${localStorage.getItem('userId')}`
+          }
+        });
+        this.photo.comments = this.photo.comments.filter(comment => comment.commentId !== commentId);
+      } catch (error) {
+        console.error('Failed to delete comment', error);
       }
     },
     formatDate(value) {
@@ -101,6 +108,7 @@ export default {
   }
 }
 </script>
+
 
 
 

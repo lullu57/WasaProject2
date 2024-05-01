@@ -212,10 +212,10 @@ func handleGetFollowers(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 }
 
 func handleGetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	ctx.Logger.Infof("Fetching username for userID")
-	userId := ps.ByName("userID")
+	ctx.Logger.Infof("Fetching username for userId")
+	userId := ps.ByName("userId")
 	if userId == "" {
-		http.Error(w, "Invalid userID parameter", http.StatusBadRequest)
+		http.Error(w, "Invalid userId parameter", http.StatusBadRequest)
 		return
 	}
 	username, err := ctx.Database.GetUsername(userId)

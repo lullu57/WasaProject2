@@ -36,6 +36,7 @@ export default {
         const response = await api.get('/stream', {
           headers: { Authorization: localStorage.getItem('userId') }
         });
+        console.log('response', response);
         if (response && response.data) {
           this.photos = await Promise.all(response.data.map(async photo => {
             // Fetch usernames for each comment on the photo

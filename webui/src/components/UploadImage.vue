@@ -49,6 +49,7 @@
     margin-top: 20px;
     justify-content: center;
     align-items: center;
+    padding: 3px;
   }
 
   button {
@@ -56,6 +57,7 @@
     background-color: #86c457;
     justify-content: center;
     align-items: center;
+    margin-left: 30px;
   }
   
   </style>

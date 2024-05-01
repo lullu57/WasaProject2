@@ -12,7 +12,8 @@ const router = createRouter({
             name: 'Profile',
             component: ProfileView,
             meta: { requiresAuth: true }
-        }
+        },
+		{ path: '/stream', name:'Stream', component: StreamView , meta: { requiresAuth: true }},
 	]	
 })
 

@@ -82,12 +82,14 @@ const checkIfUserIsFollowed = async () => {
   try {
 
   const method = 'get'
+  console.log('userId', userId);
   const endpoint = `/follows/${userId}`;
   const response = await api[method](endpoint, {} , {
     headers: {
       Authorization: localStorageUserId
     }
   });
+    console.log('response', response);
     userProfile.value.isFollowing = response.data.isFollowing;
   } catch (error) {
     console.error("Error checking if user is followed:", error);
@@ -98,11 +100,13 @@ const checkIfUserIsBanned = async () => {
   try {
     const method = 'get'
     const endpoint = `/bans/${userId}`;
+    console.log('endpoint', endpoint);
     const response = await api[method](endpoint, {} , {
       headers: {
         Authorization: localStorageUserId
       }
     });
+    console.log('response', response);
     userProfile.value.isBanned = response.data.isBanned;
   } catch (error) {
     console.error("Error checking if user is banned:", error);

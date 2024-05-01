@@ -4,8 +4,13 @@
       <ul class="user-list">
         <li v-for="user in users" :key="user.userId">
           {{ user.username }}
+          <!-- Toggle Follow/Unfollow -->
           <button @click="toggleFollow(user)" :disabled="user.processing">
             {{ user.isFollowing ? 'Unfollow' : 'Follow' }}
+          </button>
+          <!-- Toggle Ban/Unban -->
+          <button @click="toggleBan(user)" :disabled="user.processing">
+            {{ user.isBanned ? 'Unban' : 'Ban' }}
           </button>
         </li>
       </ul>
@@ -32,29 +37,34 @@
           });
           this.users = response.data.map(user => ({
             ...user,
-            isFollowing: false, // default to false, will be updated
+            isFollowing: false,
+            isBanned: false,
             processing: false
           }));
-          await this.checkFollowStatus();
+          await this.checkFollowAndBanStatus();
         } catch (error) {
           console.error('Failed to fetch users:', error);
         }
       },
-      async checkFollowStatus() {
+      async checkFollowAndBanStatus() {
         try {
-          // Get following status for each user
           for (const user of this.users) {
-            const res = await api.get(`/follows/${user.userId}`, {
+            const followRes = await api.get(`/follows/${user.userId}`, {
               headers: { Authorization: localStorage.getItem('userId') }
             });
-            user.isFollowing = res.data.isFollowed;
+            user.isFollowing = followRes.data.isFollowed;
+  
+            const banRes = await api.get(`/bans/${user.userId}`, {
+              headers: { Authorization: localStorage.getItem('userId') }
+            });
+            user.isBanned = banRes.data.isBanned;
           }
         } catch (error) {
-          console.error('Failed to fetch follow status:', error);
+          console.error('Failed to fetch follow/ban status:', error);
         }
       },
       async toggleFollow(user) {
-        user.processing = true; // Indicate processing
+        user.processing = true;
         try {
           if (user.isFollowing) {
             await api.delete(`/users/follows/${user.userId}`, {
@@ -70,7 +80,27 @@
         } catch (error) {
           console.error('Failed to toggle follow:', error);
         } finally {
-          user.processing = false; // Processing done
+          user.processing = false;
+        }
+      },
+      async toggleBan(user) {
+        user.processing = true;
+        try {
+          if (user.isBanned) {
+            await api.delete(`/users/bans/${user.userId}`, {
+              headers: { Authorization: localStorage.getItem('userId') }
+            });
+            user.isBanned = false;
+          } else {
+            await api.post(`/users/bans/${user.userId}`, {}, {
+              headers: { Authorization: localStorage.getItem('userId') }
+            });
+            user.isBanned = true;
+          }
+        } catch (error) {
+          console.error('Failed to toggle ban:', error);
+        } finally {
+          user.processing = false;
         }
       }
     }

@@ -90,14 +90,14 @@ func (db *appdbimpl) AddUser(user *User) error {
 	return nil
 }
 
-func (db *appdbimpl) SetUsername(currentUsername, newUsername string) error {
-	stmt, err := db.c.Prepare("UPDATE users SET username = ? WHERE username = ?")
+func (db *appdbimpl) SetUsername(userId, newUsername string) error {
+	stmt, err := db.c.Prepare("UPDATE users SET username = ? WHERE userId = ?")
 	if err != nil {
 		return fmt.Errorf("failed to prepare statement: %w", err)
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(newUsername, currentUsername)
+	_, err = stmt.Exec(newUsername, userId)
 	if err != nil {
 		return fmt.Errorf("failed to execute statement: %w", err)
 	}

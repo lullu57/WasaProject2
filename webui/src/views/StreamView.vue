@@ -1,6 +1,6 @@
 <template>
     <div class="stream-view">
-      <div v-if="photos.length > 0">
+      <div v-if="photos.length > 0" class="photo-grid">
         <PhotoCard 
           v-for="photo in photos" 
           :key="photo.photoId"
@@ -12,6 +12,7 @@
       </div>
     </div>
   </template>
+  
   
   <script>
   import PhotoCard from '@/components/PhotoCard.vue';
@@ -76,8 +77,22 @@
     gap: 20px;
     padding: 20px;
   }
+  
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
   p {
     color: #666;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .photo-grid {
+      grid-template-columns: 1fr; /* Adjust grid for smaller screens */
+    }
   }
   </style>
   

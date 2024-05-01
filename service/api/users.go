@@ -47,7 +47,7 @@ func HandleSetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		http.Error(w, "New username must be provided", http.StatusBadRequest)
 		return
 	}
-
+	ctx.Logger.Info("CurrentID: ", ctx.User.ID)
 	// Assuming we can obtain the current username from the context of the logged user
 	currentUserID := ctx.User.ID // Ensure that ctx.User is populated correctly in the middleware
 

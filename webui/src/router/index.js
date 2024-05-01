@@ -15,6 +15,7 @@ const router = createRouter({
             meta: { requiresAuth: true }
         },
 		{ path: '/stream', name:'Stream', component: StreamView , meta: { requiresAuth: true }},
+		{ path: '/discover', name:'Discover', component: DiscoverUsers, meta: { requiresAuth: true } },
 	]	
 })
 

@@ -2,6 +2,8 @@
   <div class="profile-view">
     <div v-if="userProfile" class="info-container">
       <p>Username: {{ userProfile.username }}</p>
+      <input v-model="newUsername" placeholder="Change username" />
+      <button @click="changeUsername">Change Username</button>
       <p>Followers: {{ userProfile.followers?.length || '0' }}</p>
       <p>Following: {{ userProfile.following?.length || '0' }}</p>
       <p>Posts: {{ detailedPhotos.length || '0' }}</p>
@@ -37,6 +39,7 @@ import PhotoCard from '@/components/PhotoCard.vue';
 const route = useRoute();
 const userId = route.params.profileId;
 const userProfile = ref(null);
+const newUsername = ref('');
 const detailedPhotos = ref([]);
 const localStorageUserId = localStorage.getItem('userId');
 const isOwnProfile = computed(() => userId === localStorageUserId);
@@ -138,6 +141,18 @@ const unbanUser = async () => {
   userProfile.value.isBanned = false;
 };
 
+const changeUsername = async () => {
+  try {
+    const respoonse = await api.patch(`/users/${userProfile.value.username}`, { username: newUsername.value }, {
+      headers: { Authorization: localStorageUserId }
+    });
+    userProfile.value.username = newUsername.value; // Update the username in the view
+    newUsername.value = ''; // Clear the input field
+    alert('Username changed successfully!');
+  } catch (error) {
+    console.error("Error changing username:", error);
+  }
+};
 
 onMounted(fetchUserProfile);
 </script>
@@ -160,5 +175,16 @@ onMounted(fetchUserProfile);
   gap: 20px; /* Adjust gap for spacing between cards */
   justify-content: center; /* Center cards in the gallery if they don't fill all columns */
   align-items: start; /* Align items at the start of the grid line */
+}
+
+input[type="text"] {
+  display: block;
+  margin-top: 10px;
+  padding: 8px;
+  width: 100%;
+}
+
+button {
+  margin-top: 10px;
 }
 </style>

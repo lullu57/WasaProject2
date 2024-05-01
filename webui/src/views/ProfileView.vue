@@ -80,17 +80,13 @@ const fetchPhotoDetails = async (photoIds) => {
 
 const checkIfUserIsFollowed = async () => {
   try {
-
-  const method = 'get'
-  console.log('userId', userId);
-  const endpoint = `/follows/${userId}`;
-  const response = await api[method](endpoint, {} , {
-    headers: {
-      Authorization: localStorageUserId
-    }
-  });
-    console.log('response', response);
-    userProfile.value.isFollowing = response.data.isFollowing;
+    const response = await api.get(`/follows/${userId}`, {
+      headers: {
+        Authorization: `${localStorage.getItem('userId')}`
+      }
+    });
+    console.log('Response from follows endpoint:', response);
+    userProfile.value.isFollowing = response.data.isFollowed; // Ensure this matches the key returned by your API
   } catch (error) {
     console.error("Error checking if user is followed:", error);
   }
@@ -98,16 +94,13 @@ const checkIfUserIsFollowed = async () => {
 
 const checkIfUserIsBanned = async () => {
   try {
-    const method = 'get'
-    const endpoint = `/bans/${userId}`;
-    console.log('endpoint', endpoint);
-    const response = await api[method](endpoint, {} , {
+    const response = await api.get(`/bans/${userId}`, {
       headers: {
-        Authorization: localStorageUserId
+        Authorization: `${localStorage.getItem('userId')}`
       }
     });
-    console.log('response', response);
-    userProfile.value.isBanned = response.data.isBanned;
+    console.log('Response from bans endpoint:', response);
+    userProfile.value.isBanned = response.data.isBanned; // Ensure this matches the key returned by your API
   } catch (error) {
     console.error("Error checking if user is banned:", error);
   }

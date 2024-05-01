@@ -100,8 +100,8 @@ const checkIfUserIsBanned = async () => {
       }
     });
     console.log('Response from bans endpoint:', response);
-    userProfile.value.isBanned = response.data.isBanned; // Ensure this matches the key returned by your API
-    console.log('userProfile', response.data.isBanned);
+    userProfile.value.isBanned = response.data.banned; // Ensure this matches the key returned by your API
+    console.log('userProfile', response.data.banned);
   } catch (error) {
     console.error("Error checking if user is banned:", error);
   }

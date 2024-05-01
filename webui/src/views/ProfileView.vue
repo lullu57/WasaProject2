@@ -116,7 +116,7 @@ const toggleFollow = async () => {
     console.log('method', method);
     await api[method](endpoint, {}, {
       headers: {
-        Authorization: `${localStorage.getItem('userId')}`
+        Authorization: localStorageUserId
       }
     });
     console.log(`Follow status changed to: ${!userProfile.value.isFollowing}`);

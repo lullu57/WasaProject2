@@ -48,7 +48,7 @@
       },
       async checkFollowAndBanStatus() {
         try {
-          for (const user of this.users) {
+          await Promise.all(this.users.map(async (user) => {
             const followRes = await api.get(`/follows/${user.userId}`, {
               headers: { Authorization: localStorage.getItem('userId') }
             });
@@ -58,7 +58,7 @@
               headers: { Authorization: localStorage.getItem('userId') }
             });
             user.isBanned = banRes.data.isBanned;
-          }
+          }));
         } catch (error) {
           console.error('Failed to fetch follow/ban status:', error);
         }

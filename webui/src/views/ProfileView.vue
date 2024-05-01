@@ -110,6 +110,8 @@ const toggleFollow = async () => {
   try {
     const method = userProfile.value.isFollowing ? 'delete' : 'post';
     const endpoint = `/users/follows/${userId}`;
+    console.log('endpoint', endpoint);
+    console.log('method', method);
     await api[method](endpoint, {}, {
       headers: {
         Authorization: `${localStorage.getItem('userId')}`
@@ -126,6 +128,8 @@ const toggleBan = async () => {
   try {
     const method = userProfile.value.isBanned ? 'delete' : 'post';
     const endpoint = `/users/bans/${userId}`;
+    console.log('endpoint', endpoint);
+    console.log('method', method);
     await api[method](endpoint, {}, {
       headers: {
         Authorization: `${localStorage.getItem('userId')}`

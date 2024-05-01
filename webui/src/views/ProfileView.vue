@@ -134,7 +134,7 @@ const unbanUser = async () => {
 const changeUsername = async () => {
   try {
     console.log('Changing username to:', newUsername.value);
-    await api.patch(`/users/${newUsername.value}`, {
+    await api.patch(`/users/${newUsername.value}`, {}, {
       headers: { Authorization: localStorageUserId }
     });
     userProfile.value.username = newUsername.value; // Update the username in the view

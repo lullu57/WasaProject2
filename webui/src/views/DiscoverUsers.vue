@@ -57,7 +57,7 @@
             const banRes = await api.get(`/bans/${user.userId}`, {
               headers: { Authorization: localStorage.getItem('userId') }
             });
-            user.isBanned = banRes.data.isBanned;
+            user.isBanned = banRes.data.banned;
           }));
         } catch (error) {
           console.error('Failed to fetch follow/ban status:', error);

@@ -212,19 +212,19 @@ func handleGetFollowers(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 }
 
 func handleGetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	userID := ps.ByName("userID")
-	if userID == "" {
+	ctx.Logger.Infof("Fetching username for userID")
+	userId := ps.ByName("userID")
+	if userId == "" {
 		http.Error(w, "Invalid userID parameter", http.StatusBadRequest)
 		return
 	}
-
-	username, err := ctx.Database.GetUsername(userID)
+	username, err := ctx.Database.GetUsername(userId)
 	if err != nil {
 		ctx.Logger.Error("Failed to retrieve username: ", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	ctx.Logger.Infof("Username fetched for userID: %s", userID)
+	ctx.Logger.Infof("Username fetched for userID: %s", userId)
 	response := map[string]string{"username": username}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)

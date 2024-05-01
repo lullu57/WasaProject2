@@ -2,8 +2,8 @@
   <div class="profile-view">
     <div v-if="userProfile" class="info-container">
       <p>Username: {{ userProfile.username }}</p>
-      <input v-model="newUsername" placeholder="Change username" />
-      <button @click="changeUsername">Change Username</button>
+      <input v-if="!isOwnProfile" v-model="newUsername" placeholder="Change username" />
+      <button v-if="!isOwnProfile" @click="changeUsername">Change Username</button>
       <p>Followers: {{ userProfile.followers?.length || '0' }}</p>
       <p>Following: {{ userProfile.following?.length || '0' }}</p>
       <p>Posts: {{ detailedPhotos.length || '0' }}</p>
@@ -43,19 +43,14 @@ const newUsername = ref('');
 const detailedPhotos = ref([]);
 const localStorageUserId = localStorage.getItem('userId');
 const isOwnProfile = computed(() => userId === localStorageUserId);
-console.log('isOwnProfile', isOwnProfile.value);
-console.log('userId', userId);
 
 const fetchUserProfile = async () => {
   try {
-    console.log('userId', userId);
     const response = await api.get(`/users/id/${userId}`);
-    console.log('response', response);
     userProfile.value = response.data;
     if (userProfile.value && userProfile.value.photos) {
       fetchPhotoDetails(userProfile.value.photos);
     }
-    console.log('userProfile', userProfile.value);
     if (!isOwnProfile.value) { // Check if the profile is not the user's own
       await checkIfUserIsFollowed(); // Check if the user is following the profile user
       await checkIfUserIsBanned(); // Check if the user has banned the profile user
@@ -75,7 +70,6 @@ const fetchPhotoDetails = async (photoIds) => {
         comment.username = userResponse.data.username;
         return comment;
       }));
-      console.log('photo', photo);
       return photo;
     } catch (error) {
       console.error("Error fetching photo details:", error);
@@ -91,7 +85,6 @@ const checkIfUserIsFollowed = async () => {
         Authorization: `${localStorage.getItem('userId')}`
       }
     });
-    console.log('Response from follows endpoint:', response);
     userProfile.value.isFollowing = response.data.isFollowed; // Ensure this matches the key returned by your API
   } catch (error) {
     console.error("Error checking if user is followed:", error);
@@ -104,11 +97,8 @@ const checkIfUserIsBanned = async () => {
       headers: {
         Authorization: `${localStorage.getItem('userId')}`
       }
-    });
-    console.log('Response from bans endpoint:', response);
-    console.log(response.data)
+    })
     userProfile.value.isBanned = response.data.banned; // Ensure this matches the key returned by your API
-    console.log('userProfile', response.data.banned);
   } catch (error) {
     console.error("Error checking if user is banned:", error);
   }

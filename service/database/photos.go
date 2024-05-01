@@ -71,17 +71,15 @@ func (db *appdbimpl) DeletePhoto(photoID string) error {
 	return tx.Commit()
 }
 
-func (db *appdbimpl) GetMyStream(userID string) ([]Photo, error) {
-	var photos []Photo
-	// Update the SQL query to exclude photos from users who have banned the current user
+func (db *appdbimpl) GetMyStream(userID string) ([]string, error) {
+	var photoIds []string
 	query := `
-    SELECT p.*
+    SELECT p.photo_id
     FROM new_photos p
     JOIN followers f ON p.user_id = f.user_id
     LEFT JOIN new_bans b ON p.user_id = b.banned_by AND b.banned_user = ?
     WHERE f.follower_id = ? AND b.ban_id IS NULL
     `
-	// Execute the query with the userID twice: once for the banned check, once for the follower check
 	rows, err := db.c.Query(query, userID, userID)
 	if err != nil {
 		return nil, err
@@ -89,13 +87,13 @@ func (db *appdbimpl) GetMyStream(userID string) ([]Photo, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var photo Photo
-		if err := rows.Scan(&photo.ID, &photo.UserID, &photo.ImageData, &photo.Timestamp); err != nil {
+		var photoId string
+		if err := rows.Scan(&photoId); err != nil {
 			return nil, err
 		}
-		photos = append(photos, photo)
+		photoIds = append(photoIds, photoId)
 	}
-	return photos, nil
+	return photoIds, nil
 }
 
 func (db *appdbimpl) GetPhoto(photoId string) (*PhotoDetail, error) {

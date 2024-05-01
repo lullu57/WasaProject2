@@ -120,7 +120,7 @@ type AppDatabase interface {
 	UnbanUser(bannerID, bannedUserID string) error
 	GetBans() ([]Ban, error)
 	GetAllUsers() ([]User, error)
-	GetMyStream(userID string) ([]Photo, error)
+	GetMyStream(userID string) ([]string, error)
 	DeleteComment(commentID string) error
 	AddComment(comment Comment) error
 	DeletePhoto(photoID string) error

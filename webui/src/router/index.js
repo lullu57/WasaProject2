@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
 import StreamView from '../views/StreamView.vue'
+import DiscoverUsers from '../views/DiscoverUsers.vue'
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),

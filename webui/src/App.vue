@@ -83,7 +83,8 @@ function logout() {
 }
 
 .sidebar {
-  width: 250px; /* Increased width */
+  background-color: #67b0f9; /* Light background color */
+  width: 200px; /* Increased width */
 }
 
 .nav-link {

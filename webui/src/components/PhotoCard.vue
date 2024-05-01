@@ -15,7 +15,8 @@
         </div>
         <div class="comment" v-for="comment in photo.comments" :key="comment.commentId">
           <strong>{{ comment.username }}</strong>: {{ comment.content }}
-          <button v-if="comment.userId === localStorage.getItem('userId')" @click="deleteComment(comment.commentId)" class="delete-comment">Delete</button>
+          <!-- Conditional rendering based on the computed userId -->
+          <button v-if="comment.userId === userId" @click="deleteComment(comment.commentId)" class="delete-comment">Delete</button>
         </div>
       </div>
     </div>
@@ -33,8 +34,13 @@ export default {
     return {
       showComments: true,
       isLiked: false,
-      newComment: ''
+      newComment: '',
     };
+  },
+  computed: {
+    userId() {
+      return localStorage.getItem('userId'); // Access localStorage once and use it reactively
+    }
   },
   mounted() {
     this.checkIfLiked();
@@ -43,7 +49,7 @@ export default {
     async checkIfLiked() {
       const config = {
         headers: {
-          Authorization: `${localStorage.getItem('userId')}`
+          Authorization: this.userId
         }
       };
       try {
@@ -56,7 +62,7 @@ export default {
     async toggleLike() {
       const config = {
         headers: {
-          Authorization: `${localStorage.getItem('userId')}`
+          Authorization: this.userId
         }
       };
       try {
@@ -76,7 +82,7 @@ export default {
       if (this.newComment.trim() !== '') {
         const config = {
           headers: {
-            Authorization: `${localStorage.getItem('userId')}`
+            Authorization: this.userId
           }
         };
         const response = await api.post(`/photos/${this.photo.photoId}/comments`, { content: this.newComment }, config);
@@ -85,7 +91,7 @@ export default {
           username,
           content: this.newComment,
           commentId: response.data.commentId,
-          userId: localStorage.getItem('userId') // Assuming you're storing userId in localStorage
+          userId: this.userId // Use the computed property
         });
         this.newComment = '';
       }
@@ -94,7 +100,7 @@ export default {
       try {
         await api.delete(`/comments/${commentId}`, {
           headers: {
-            Authorization: `${localStorage.getItem('userId')}`
+            Authorization: this.userId
           }
         });
         this.photo.comments = this.photo.comments.filter(comment => comment.commentId !== commentId);

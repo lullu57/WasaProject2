@@ -91,7 +91,7 @@ func (db *appdbimpl) AddUser(user *User) error {
 }
 
 func (db *appdbimpl) SetUsername(userId, newUsername string) error {
-	stmt, err := db.c.Prepare("UPDATE users SET username = ? WHERE userId = ?")
+	stmt, err := db.c.Prepare("UPDATE users SET username = ? WHERE user_id = ?")
 	if err != nil {
 		return fmt.Errorf("failed to prepare statement: %w", err)
 	}

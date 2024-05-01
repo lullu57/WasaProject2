@@ -107,26 +107,37 @@ const checkIfUserIsBanned = async () => {
 };
 
 const toggleFollow = async () => {
-  const method = userProfile.value.isFollowing ? 'delete' : 'post';
-  const endpoint = `/users/follows/${userId}`;
-  await api[method](endpoint, {} , {
-    headers: {
-      Authorization: localStorageUserId
-    }
-  });
-  userProfile.value.isFollowing = !userProfile.value.isFollowing;
+  try {
+    const method = userProfile.value.isFollowing ? 'delete' : 'post';
+    const endpoint = `/users/follows/${userId}`;
+    await api[method](endpoint, {}, {
+      headers: {
+        Authorization: `${localStorage.getItem('userId')}`
+      }
+    });
+    console.log(`Follow status changed to: ${!userProfile.value.isFollowing}`);
+    userProfile.value.isFollowing = !userProfile.value.isFollowing;
+  } catch (error) {
+    console.error("Error toggling follow status:", error);
+  }
 };
 
 const toggleBan = async () => {
-  const method = userProfile.value.isBanned ? 'delete' : 'post';
-  const endpoint = `/users/bans/${userId}`;
-  await api[method](endpoint, {} , {
-    headers: {
-      Authorization: localStorageUserId
-    }
-  });
-  userProfile.value.isBanned = !userProfile.value.isBanned;
+  try {
+    const method = userProfile.value.isBanned ? 'delete' : 'post';
+    const endpoint = `/users/bans/${userId}`;
+    await api[method](endpoint, {}, {
+      headers: {
+        Authorization: `${localStorage.getItem('userId')}`
+      }
+    });
+    console.log(`Ban status changed to: ${!userProfile.value.isBanned}`);
+    userProfile.value.isBanned = !userProfile.value.isBanned;
+  } catch (error) {
+    console.error("Error toggling ban status:", error);
+  }
 };
+
 
 onMounted(fetchUserProfile);
 </script>

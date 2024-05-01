@@ -57,8 +57,7 @@
     background-color: #86c457;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+    padding: auto;
   }
   
   </style>

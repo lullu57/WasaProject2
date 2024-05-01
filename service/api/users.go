@@ -40,6 +40,7 @@ func HandleAddUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params,
 
 func HandleSetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	// Get the new username from URL parameters if needed
+	ctx.Logger.Info("Setting new username for user")
 	newUsername := ps.ByName("username")
 
 	if newUsername == "" {

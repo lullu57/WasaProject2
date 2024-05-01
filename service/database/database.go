@@ -105,7 +105,7 @@ type AppDatabase interface {
 	SetName(name string) error
 	AddUser(user *User) error
 	Ping() error
-	SetUsername(currentUsername string, newUsername string) error
+	SetUsername(userId, newUsername string) error
 	GetUserProfile(username string) (*User, error)
 	LikePhoto(userID string, photoID string) error
 	UnlikePhoto(userID string, photoID string) error

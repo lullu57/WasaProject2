@@ -23,7 +23,8 @@
     },
     data() {
       return {
-        photos: []
+        photos: [],
+        error: '' // To handle errors and display messages
       };
     },
     async mounted() {
@@ -35,9 +36,19 @@
           const response = await api.get('/stream', {
             headers: { Authorization: localStorage.getItem('userId') }
           });
-          this.photos = response.data;
+          this.photos = await Promise.all(response.data.map(async photo => {
+            // Fetch usernames for each comment on the photo
+            photo.comments = await Promise.all(photo.comments.map(async (comment) => {
+              const userResponse = await api.get(`/username/${comment.userId}`);
+              comment.username = userResponse.data.username;
+              comment.isOwner = comment.userId === localStorage.getItem('userId');
+              return comment;
+            }));
+            return photo;
+          }));
         } catch (error) {
           console.error('Failed to fetch stream:', error);
+          this.error = "Failed to load photos. Please try again later.";
         }
       }
     }
@@ -50,6 +61,10 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    padding: 20px;
+  }
+  p {
+    color: #666;
   }
   </style>
   

@@ -73,10 +73,16 @@ func (db *appdbimpl) DeletePhoto(photoID string) error {
 
 func (db *appdbimpl) GetMyStream(userID string) ([]Photo, error) {
 	var photos []Photo
-	query := `SELECT p.* FROM new_photos p
-              JOIN followers f ON p.user_id = f.user_id
-              WHERE f.follower_id = ?`
-	rows, err := db.c.Query(query, userID)
+	// Update the SQL query to exclude photos from users who have banned the current user
+	query := `
+    SELECT p.*
+    FROM new_photos p
+    JOIN followers f ON p.user_id = f.user_id
+    LEFT JOIN new_bans b ON p.user_id = b.banned_by AND b.banned_user = ?
+    WHERE f.follower_id = ? AND b.ban_id IS NULL
+    `
+	// Execute the query with the userID twice: once for the banned check, once for the follower check
+	rows, err := db.c.Query(query, userID, userID)
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,6 @@
 <template>
     <div class="stream-view">
-      <div v-if="photos.length > 0" class="photo-grid">
+      <div v-if="photos.length > 0" class="gallery">
         <PhotoCard 
           v-for="photo in photos" 
           :key="photo.photoId"
@@ -78,21 +78,17 @@
     padding: 20px;
   }
   
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  
   p {
     color: #666;
     text-align: center;
   }
   
-  @media (max-width: 768px) {
-    .photo-grid {
-      grid-template-columns: 1fr; /* Adjust grid for smaller screens */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust minmax for desired card width */
+    gap: 20px; /* Adjust gap for spacing between cards */
+    justify-content: center; /* Center cards in the gallery if they don't fill all columns */
+    align-items: start; /* Align items at the start of the grid line */
     }
-  }
   </style>
   

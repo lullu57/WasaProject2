@@ -234,7 +234,7 @@ func handleIsUserFollowed(w http.ResponseWriter, r *http.Request, ps httprouter.
 	userId := ps.ByName("userId")
 	followerId := ctx.User.ID
 
-	isFollowed, err := ctx.Database.IsUserFollowed(followerId, userId)
+	isFollowed, err := ctx.Database.IsUserFollowed(userId, followerId)
 	if err != nil {
 		ctx.Logger.Error("Failed to check if user is followed: ", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)

@@ -2,8 +2,8 @@
   <div class="profile-view">
     <div v-if="userProfile" class="info-container">
       <p>Username: {{ userProfile.username }}</p>
-      <input v-if="!isOwnProfile" v-model="newUsername" placeholder="Change username" />
-      <button v-if="!isOwnProfile" @click="changeUsername">Change Username</button>
+      <input v-if="isOwnProfile" v-model="newUsername" placeholder="Change username" />
+      <button v-if="isOwnProfile" @click="changeUsername">Change Username</button>
       <p>Followers: {{ userProfile.followers?.length || '0' }}</p>
       <p>Following: {{ userProfile.following?.length || '0' }}</p>
       <p>Posts: {{ detailedPhotos.length || '0' }}</p>

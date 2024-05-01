@@ -166,7 +166,7 @@ func HandleUnfollowUser(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 	userId := ps.ByName("userId") // Extracting username from URL parameter
 
 	followerID := ctx.User.ID
-	var err = ctx.Database.UnfollowUser(followerID, userId)
+	var err = ctx.Database.UnfollowUser(userId, followerID)
 	if err != nil {
 		ctx.Logger.Errorf("Error unfollowing user: %v", err)
 		http.Error(w, "Failed to unfollow user", http.StatusInternalServerError)

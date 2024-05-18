@@ -62,22 +62,6 @@ func HandleSetUsername(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	json.NewEncoder(w).Encode(map[string]string{"message": "Username updated successfully"})
 }
 
-func HandleGetUserProfile(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
-	username := ps.ByName("username") // Assuming username is the URL parameter
-
-	ctx.Logger.Info("Retrieving user profile for username: ", username)
-	user, err := ctx.Database.GetUserProfile(username)
-	if err != nil {
-		ctx.Logger.Error("User not found: ", err)
-		http.Error(w, "User not found", http.StatusNotFound)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
-}
-
 func HandleGetUserProfileID(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx reqcontext.RequestContext) {
 	userID := ps.ByName("userID") // Assuming userID is the URL parameter
 
